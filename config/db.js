@@ -9,6 +9,7 @@ async function connectToMongo() {
         console.log("Connection is successful");
     } catch (error) {
         console.error("Connection failed", error.message);
+        console.error(error.stack);
     }
 }
 
