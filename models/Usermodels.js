@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    Address: {
+    address: {
       type: String,
       required: true,
     },
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "userecommerse" }
 );
 
-export default mongoose.model("user", userSchema);
+export default mongoose.model("Userecommerse", userSchema);

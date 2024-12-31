@@ -1,5 +1,7 @@
-password:fSEx6ooq3rzO6cCX
-username:shreyashpatel5506
+password:oUWaro79TQ5kmcNp
+username:shreyash5506
 
 
-mongourl::mongodb+srv://shreyashpatel5506:fSEx6ooq3rzO6cCX@e-commrse.7uelv.mongodb.net/
+mongourl::mongodb+srv://shreyash5506:oUWaro79TQ5kmcNp@e-commrse.k2st0.mongodb.net/?retryWrites=true&w=majority&appName=E-commrse
+
+mongo::mongodb+srv://shreyash5506:oUWaro79TQ5kmcNp@e-commrse.k2st0.mongodb.net/
