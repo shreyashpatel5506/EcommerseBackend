@@ -58,6 +58,7 @@ export const registerController = async (req, res) => {
   }
 };
 
+//login controller
 export const loginContoller = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -79,9 +80,15 @@ export const loginContoller = async (req, res) => {
     const data = { user: { id: user.id } };
     const jwtToken = jwt.sign(data, JWT_SECRET);
 
-    res.json({ success: true, jwtToken });
+    res.json({ success: true, jwtToken, message: "Login sucessssfully", user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ sucess: false, error: "Error in login" });
   }
+};
+
+//testcontroller
+export const testcontroller = (req, res) => {
+  console.log("Protected Route");
+  res.send("Protected Route");
 };
