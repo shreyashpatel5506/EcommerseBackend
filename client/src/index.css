@@ -11,3 +11,43 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.active {
+  font-weight: bold;
+  color: #000;
+  border-bottom: solid 2px #000;  
+}
+
+
+.underline-hover:hover::before {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+.active {
+  font-weight: bold;
+  color: #000;
+}
+.animated-btn {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.animated-btn:hover {
+  background-color: #6610f2; /* Change button color on hover */
+  transform: scale(1.1); /* Slightly increase size */
+}
+
+textarea.form-control {
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  padding: 15px;
+  font-size: 1rem;
+}
+
+textarea.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+  outline: none;
+}

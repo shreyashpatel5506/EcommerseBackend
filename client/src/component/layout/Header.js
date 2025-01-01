@@ -11,9 +11,11 @@ const Header = () => {
           borderBottom: "1px solid #000",
           WebkitBoxShadow: "0px 5px 5px 0px rgba(0,0,0,0.75)",
           boxShadow: "0px 5px 5px 0px rgba(0,0,0,0.75)",
+          textTransform: "uppercase",
         }}
       >
         <div className="container-fluid">
+          <i className="fa-solid fa-bag-shopping mx-3"></i>
           <Link className="navbar-brand" to="/">
             i-NoteBook
           </Link>
@@ -33,12 +35,10 @@ const Header = () => {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${
-                    location.pathname === "/" || location.pathname === "/home"
-                      ? "active"
-                      : ""
+                    location.pathname === "/" ? "active" : ""
                   }`}
                   aria-current="page"
-                  to="/home"
+                  to="/"
                 >
                   Home
                 </Link>
@@ -72,9 +72,8 @@ const Header = () => {
               <Link className="btn btn-primary mx-1" role="button" to="/signup">
                 Sign Up
               </Link>
-              <Link className="btn btn-secondary mx-1" role="button" to="/cart">
-                {/* <i className="fa-solid fa-cart-shopping"></i> Cart */}
-                Cart
+              <Link className="btn mx-1" role="button" to="/cart">
+                <i class="fa-solid fa-cart-flatbed-suitcase"></i>
               </Link>
             </div>
           </div>
