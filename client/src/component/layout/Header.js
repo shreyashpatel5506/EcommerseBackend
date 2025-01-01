@@ -5,7 +5,14 @@ const Header = () => {
   const location = useLocation();
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav
+        className="navbar navbar-expand-lg bg-body-tertiary"
+        style={{
+          borderBottom: "1px solid #000",
+          WebkitBoxShadow: "0px 5px 5px 0px rgba(0,0,0,0.75)",
+          boxShadow: "0px 5px 5px 0px rgba(0,0,0,0.75)",
+        }}
+      >
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             i-NoteBook
