@@ -17,7 +17,7 @@ const Header = () => {
         <div className="container-fluid">
           <i className="fa-solid fa-bag-shopping mx-3"></i>
           <Link className="navbar-brand" to="/">
-            i-NoteBook
+            E-Commerse
           </Link>
           <button
             className="navbar-toggler"

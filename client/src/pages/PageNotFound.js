@@ -3,7 +3,7 @@ import Layout from "../component/layout/Layout";
 
 const PageNotFound = () => {
   return (
-    <Layout>
+    <Layout title={"Page Not Found - Ecommerse"} description={"Page Not Found"}>
       <div className="container">
         <div className="row">
           <div className="col-md-12 text-center">

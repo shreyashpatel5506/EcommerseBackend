@@ -3,13 +3,13 @@ import Layout from "../component/layout/Layout";
 
 const Contact = () => {
   return (
-    <Layout>
+    <Layout title={"Contact Us- Ecommerse"} description={"Contact Us"}>
       <div className="container my-5">
         <div className="row align-items-center">
           {/* Left Side: Image */}
           <div className="col-md-6">
             <img
-              src="https://via.placeholder.com/500x400"
+              src="/assests/Contact.jpg"
               alt="Contact Us"
               className="img-fluid rounded shadow"
             />
