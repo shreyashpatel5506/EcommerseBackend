@@ -69,8 +69,12 @@ const Header = () => {
               <Link className="btn btn-primary mx-1" role="button" to="/login">
                 Login
               </Link>
-              <Link className="btn btn-primary mx-1" role="button" to="/signup">
-                Sign Up
+              <Link
+                className="btn btn-primary mx-1"
+                role="button"
+                to="/register"
+              >
+                Register
               </Link>
               <Link className="btn mx-1" role="button" to="/cart">
                 <i class="fa-solid fa-cart-flatbed-suitcase"></i>

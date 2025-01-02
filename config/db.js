@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 async function connectToMongo() {
   try {
     const conn = await mongoose.connect(
-      "mongodb+srv://shreyashpatel5506:fSEx6ooq3rzO6cCX@e-commrse.7uelv.mongodb.net",
+      "mongodb+srv://shreyash:Shreyash%40123@cluster0.xzlmk.mongodb.net/E-commerce", // Updated database name to 'E-commerce'
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
