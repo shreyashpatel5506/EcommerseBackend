@@ -7,6 +7,8 @@ import Privacy from "./pages/Policy";
 import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
+import Dashboard from "./pages/Dashboard";
+import ForgotPasssword from "./pages/auth/ForgetPassword";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/forgot-password" element={<ForgotPasssword />}></Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

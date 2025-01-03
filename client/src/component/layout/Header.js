@@ -33,7 +33,7 @@ const Header = () => {
       user: null,
       token: "",
     });
-    localStorage.removeItem("token");
+    localStorage.removeItem("auth");
     // Ensure that the navigation replaces the current page
   };
 

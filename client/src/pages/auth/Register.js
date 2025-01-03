@@ -16,11 +16,12 @@ const Register = () => {
     address: "",
     name: "",
     termsAccepted: false,
+    answer: "", // Added answer field
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { email, password, role, phone, address, name, termsAccepted } =
+  const { email, password, role, phone, address, name, termsAccepted, answer } =
     formData;
 
   const handleChange = (e) => {
@@ -32,7 +33,7 @@ const Register = () => {
     e.preventDefault();
 
     // Basic validation
-    if (!email || !password || !name || !phone || !address) {
+    if (!email || !password || !name || !phone || !address || !answer) {
       toast.error("All fields are required!");
       return;
     }
@@ -63,7 +64,7 @@ const Register = () => {
         });
 
         localStorage.setItem("auth", JSON.stringify(response.data));
-        navigate("/login");
+        navigate("/dashboard");
       } else {
         toast.error(json.message || "Registration failed. Please try again.");
       }
@@ -159,6 +160,19 @@ const Register = () => {
                   placeholder="Enter your address"
                   required
                 ></textarea>
+              </div>
+              <div className="form-group">
+                <label htmlFor="answer">Answer</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="answer"
+                  name="answer"
+                  placeholder="Enter your answer"
+                  value={answer}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="form-check">
                 <input
