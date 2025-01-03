@@ -51,6 +51,7 @@ textarea.form-control:focus {
   box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
   outline: none;
 }
+
 .form {
   width: 40%;
   margin: auto;
@@ -58,7 +59,11 @@ textarea.form-control:focus {
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  /* font-family: "Oswald", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal; */
+  text-transform: uppercase;
 }
 
 .form .form-group {
@@ -72,7 +77,21 @@ textarea.form-control:focus {
   color: #333;
 }
 
-.form input,
+.form input {
+  border-bottom: 2px solid #050505;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+
+.form select:focus,
+.form textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
 .form select,
 .form textarea {
   width: 100%;
@@ -80,13 +99,6 @@ textarea.form-control:focus {
   border: 1px solid #ccc;
   border-radius: 5px;
   transition: border-color 0.3s ease;
-}
-
-.form input:focus,
-.form select:focus,
-.form textarea:focus {
-  border-color: #007bff;
-  outline: none;
 }
 
 .form .form-check {
@@ -105,7 +117,6 @@ textarea.form-control:focus {
   font-size: 14px;
   color: #333;
 }
-
 
 .form button {
   background-color: #007bff;

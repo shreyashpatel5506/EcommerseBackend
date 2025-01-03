@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "axios": "^1.7.9",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "cra-template": "1.2.0",

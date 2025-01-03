@@ -1,20 +1,30 @@
 import express from "express";
+// import {
+//   registerController,
+//   loginController,
+//   testcontroller,
+//   fetchalluser,
+// } from "../controller/authcontroller.js"; // Added .js to the path
+import { isAdmin, fetchuser, fetchalldata } from "../midleware/fetchuser.js";
 import {
   registerController,
-  loginContoller,
+  loginController,
   testcontroller,
-} from "../controller/authController.js"; // Added .js to the path
-import { fetchuser, isAdmin } from "../midleware/fetchuser.js";
+  fetchalluser,
+} from "../controller/authcontroller.js"; // Added .js to the path
 
 const router = express.Router();
 
 // Route 1: Register
 router.post("/register", registerController);
 
-//Route 2 :login
-router.post("/login", loginContoller);
+// Route 2: Login
+router.post("/login", loginController); // Fixed the typo here
 
-//Route 3 :test
+// Route 3: Test
 router.get("/test", fetchuser, isAdmin, testcontroller);
+
+// Route 4: Fetch
+router.get("/fetch", fetchalldata);
 
 export default router;

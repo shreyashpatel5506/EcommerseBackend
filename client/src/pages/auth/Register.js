@@ -3,9 +3,11 @@ import Layout from "../../component/layout/Layout";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/auth";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [auth, setAuth] = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -54,8 +56,14 @@ const Register = () => {
 
       if (response.ok && json.success !== undefined) {
         toast.success("Account created successfully");
-        localStorage.setItem("token", json.jwtToken);
-        navigate("/");
+        setAuth({
+          ...auth,
+          user: json.user,
+          token: json.token, // Updated key
+        });
+
+        localStorage.setItem("auth", JSON.stringify(response.data));
+        navigate("/login");
       } else {
         toast.error(json.message || "Registration failed. Please try again.");
       }

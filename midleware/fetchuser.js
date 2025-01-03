@@ -53,3 +53,37 @@ export const isAdmin = async (req, res, next) => {
     });
   }
 };
+
+export const fetchalldata = async (req, res, next) => {
+  const token = req.header("jwtdata"); // Extract token from header
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized access: No token provided",
+    });
+  }
+
+  try {
+    // Verify the token
+    const decoded = JWT.verify(token, JWT_SECRET);
+
+    // Retrieve user data from the database
+    const user = await Usermodels.findById(decoded.id).select("-password"); // Exclude password
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    req.user = decoded; // Attach decoded token data to req
+    req.rootUser = user; // Attach user data to req
+    next(); // Proceed to the next middleware or route handler
+  } catch (error) {
+    console.error("Error verifying token:", error.message);
+    return res
+      .status(401)
+      .json({ success: false, message: "Unauthorized access: Invalid token" });
+  }
+};

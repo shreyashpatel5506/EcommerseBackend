@@ -59,31 +59,26 @@ export const registerController = async (req, res) => {
 };
 
 //login controller
-export const loginContoller = async (req, res) => {
+export const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
-    //validaton
+
     const user = await Usermodels.findOne({ email });
-    if (!user) {
+    if (!user)
       return res
         .status(400)
-        .json({ success: false, error: "Invalid email or password" });
-    }
+        .json({ success: false, message: "Invalid email or password." });
 
     const passwordCompare = await bcrypt.compare(password, user.password);
-    if (!passwordCompare) {
+    if (!passwordCompare)
       return res
         .status(400)
-        .json({ success: false, error: "Invalid email or password" });
-    }
+        .json({ success: false, message: "Invalid email or password." });
 
-    const data = { user: { id: user.id } };
-    const jwtToken = jwt.sign(data, JWT_SECRET);
-
-    res.json({ success: true, jwtToken, message: "Login sucessssfully", user });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+    return res.json({ success: true, token, user });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ sucess: false, error: "Error in login" });
+    return res.status(500).json({ success: false, message: "Error in login." });
   }
 };
 
@@ -91,4 +86,14 @@ export const loginContoller = async (req, res) => {
 export const testcontroller = (req, res) => {
   console.log("Protected Route");
   res.send("Protected Route");
+};
+
+export const fetchalluser = async (req, res) => {
+  try {
+    const user = await Usermodels.find(req.user._id);
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, error: "Error in fetching user" });
+  }
 };

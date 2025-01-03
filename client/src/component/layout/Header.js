@@ -1,8 +1,42 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "../../Context/auth";
+
 const Header = () => {
+  const [auth, setAuth] = useAuth();
   const location = useLocation();
+  const navigate = useNavigate(); // Add the navigate hook
+  console.log(auth);
+
+  // useEffect(() => {
+  //   // Retrieve the token and user from localStorage if available
+  //   const token = localStorage.getItem("token");
+  //   const user = token
+  //     ? {
+  //         /* extract user data from token if needed */
+  //       }
+  //     : null;
+  //   if (token) {
+  //     setAuth({
+  //       ...auth,
+  //       user,
+  //       token,
+  //     });
+  //   }
+  // }, [setAuth]); // Dependency array should include setAuth to prevent unnecessary re-renders
+
+  // Handle user sign-out
+  const handleSignOut = () => {
+    setAuth({
+      ...auth,
+      user: null,
+      token: "",
+    });
+    localStorage.removeItem("token");
+    // Ensure that the navigation replaces the current page
+  };
+
   return (
     <>
       <nav
@@ -17,7 +51,7 @@ const Header = () => {
         <div className="container-fluid">
           <i className="fa-solid fa-bag-shopping mx-3"></i>
           <Link className="navbar-brand" to="/">
-            E-Commerse
+            E-Commerce
           </Link>
           <button
             className="navbar-toggler"
@@ -66,18 +100,32 @@ const Header = () => {
               </button>
             </form>
             <div className="d-flex ms-3">
-              <Link className="btn btn-primary mx-1" role="button" to="/login">
-                Login
-              </Link>
-              <Link
-                className="btn btn-primary mx-1"
-                role="button"
-                to="/register"
-              >
-                Register
-              </Link>
+              {auth?.token ? (
+                <>
+                  <button className="btn btn-danger" onClick={handleSignOut}>
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    className="btn btn-primary mx-1"
+                    role="button"
+                    to="/login"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    className="btn btn-primary mx-1"
+                    role="button"
+                    to="/register"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
               <Link className="btn mx-1" role="button" to="/cart">
-                <i class="fa-solid fa-cart-flatbed-suitcase"></i>
+                <i className="fa-solid fa-cart-flatbed-suitcase"></i>
               </Link>
             </div>
           </div>
