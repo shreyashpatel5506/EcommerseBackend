@@ -144,8 +144,8 @@ const Register = () => {
                   value={role}
                   onChange={handleChange}
                 >
-                  <option>Admin</option>
-                  <option>User</option>
+                  <option>admin</option>
+                  <option>user</option>
                 </select>
               </div>
               <div className="form-group">

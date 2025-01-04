@@ -1,32 +1,9 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { useAuth } from "../../Context/auth";
-
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const location = useLocation();
   const navigate = useNavigate(); // Add the navigate hook
   console.log(auth);
 
-  // useEffect(() => {
-  //   // Retrieve the token and user from localStorage if available
-  //   const token = localStorage.getItem("token");
-  //   const user = token
-  //     ? {
-  //         /* extract user data from token if needed */
-  //       }
-  //     : null;
-  //   if (token) {
-  //     setAuth({
-  //       ...auth,
-  //       user,
-  //       token,
-  //     });
-  //   }
-  // }, [setAuth]); // Dependency array should include setAuth to prevent unnecessary re-renders
-
-  // Handle user sign-out
   const handleSignOut = () => {
     setAuth({
       ...auth,
@@ -34,7 +11,6 @@ const Header = () => {
       token: "",
     });
     localStorage.removeItem("auth");
-    // Ensure that the navigation replaces the current page
   };
 
   return (
@@ -86,6 +62,30 @@ const Header = () => {
                 >
                   About
                 </Link>
+              </li>
+              <li className="nav-item dropdown">
+                <Link
+                  className="nav-link dropdown-toggle"
+                  to="/"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  {auth?.role && auth.role.toLowerCase() === "admin"
+                    ? "Admin"
+                    : auth?.role
+                    ? "User"
+                    : "No Role Assigned"}
+                </Link>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <Link className="dropdown-item" to="/">
+                    {auth?.role && auth.role.toLowerCase() === "admin"
+                      ? "Admin"
+                      : "User"}
+                  </Link>
+                </div>
               </li>
             </ul>
             <form className="d-flex" role="search">
