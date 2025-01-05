@@ -60,11 +60,12 @@ const Register = () => {
         setAuth({
           ...auth,
           user: json.user,
-          token: json.token, // Updated key
+          token: json.token,
+          // Updated key
         });
 
         localStorage.setItem("auth", JSON.stringify(response.data));
-        navigate("/dashboard");
+        navigate("/");
       } else {
         toast.error(json.message || "Registration failed. Please try again.");
       }
@@ -135,19 +136,7 @@ const Register = () => {
                   required
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="exampleFormControlSelect1">Role</label>
-                <select
-                  className="form-control"
-                  id="exampleFormControlSelect1"
-                  name="role"
-                  value={role}
-                  onChange={handleChange}
-                >
-                  <option>admin</option>
-                  <option>user</option>
-                </select>
-              </div>
+
               <div className="form-group">
                 <label htmlFor="exampleFormControlTextarea1">Address</label>
                 <textarea

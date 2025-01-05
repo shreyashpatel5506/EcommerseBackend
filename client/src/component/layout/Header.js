@@ -1,8 +1,15 @@
+import { useLocation } from "react-router-dom";
+import { useAuth } from "../../Context/auth";
+import React from "react";
+
+import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
+
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const location = useLocation();
-  const navigate = useNavigate(); // Add the navigate hook
-  console.log(auth);
+
+  console.log(auth.role);
 
   const handleSignOut = () => {
     setAuth({
@@ -66,24 +73,20 @@ const Header = () => {
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
-                  to="/"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
                 >
-                  {auth?.role && auth.role.toLowerCase() === "admin"
-                    ? "Admin"
-                    : auth?.role
-                    ? "User"
-                    : "No Role Assigned"}
+                  {auth?.user?.name}
                 </Link>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <Link className="dropdown-item" to="/">
-                    {auth?.role && auth.role.toLowerCase() === "admin"
-                      ? "Admin"
-                      : "User"}
+                  <Link
+                    className="dropdown-item"
+                    to={`/dashboard${
+                      auth?.user?.role === "Admin" ? "admin" : "user"
+                    }`}
+                  >
+                    Dashboard
                   </Link>
                 </div>
               </li>

@@ -1,74 +1,64 @@
 import JWT from "jsonwebtoken";
 import Usermodels from "../models/Usermodels.js";
-// fetchuser.js
 
-const JWT_SECRET = "your_jwt_secret_key";
+const JWT_SECRET = process.env.JWT_SECRET || "default_secret_key"; // Use environment variables for sensitive data
+
+// Middleware to fetch user from the token
 export const fetchuser = async (req, res, next) => {
   try {
-    // Assume user is fetched from database, e.g. using Mongoose
-    const decode = JWT.verify(req.headers.authorization, JWT_SECRET);
+    const token = req.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Access denied: No token provided" });
+    }
 
-    // If user is not found, send response early and return to prevent further code execution
-    req.user = decode;
-    // if (!user) {
-    //   return res.status(404).json({ error: "User not found" });
-    // }
-    // Attach user to request object for use in other middlewares or routes
-
+    const decoded = JWT.verify(token, JWT_SECRET);
+    req.user = decoded; // Attach decoded token data to request
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
-    console.error(error);
-    if (!res.headersSent) {
-      // Check if headers are already sent to avoid multiple responses
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-    next(error); // If headers are already sent, pass error to the error handling middleware
+    console.error("Error verifying token:", error.message);
+    return res
+      .status(401)
+      .json({ success: false, message: "Unauthorized: Invalid token" });
   }
 };
 
-//admin acess
+// Middleware to check admin access
 export const isAdmin = async (req, res, next) => {
   try {
     const user = await Usermodels.findById(req.user._id);
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     if (user.role !== "admin") {
-      return res.status(403).json({
-        success: false,
-        message: "Unauthorized access",
-      });
+      return res
+        .status(403)
+        .json({ success: false, message: "Forbidden: Admin access required" });
     }
 
-    next();
+    next(); // User is admin, proceed to the next middleware or route handler
   } catch (error) {
     console.error("Admin Check Error:", error.message);
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
+// Middleware to fetch all data based on token
 export const fetchalldata = async (req, res, next) => {
-  const token = req.header("jwtdata"); // Extract token from header
+  const token = req.headers["jwtdata"]; // Extract token from custom header
 
   if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: "Unauthorized access: No token provided",
-    });
+    return res
+      .status(401)
+      .json({ success: false, message: "Access denied: No token provided" });
   }
 
   try {
-    // Verify the token
     const decoded = JWT.verify(token, JWT_SECRET);
-
-    // Retrieve user data from the database
     const user = await Usermodels.findById(decoded.id).select("-password"); // Exclude password
 
     if (!user) {
@@ -77,13 +67,13 @@ export const fetchalldata = async (req, res, next) => {
         .json({ success: false, message: "User not found" });
     }
 
-    req.user = decoded; // Attach decoded token data to req
-    req.rootUser = user; // Attach user data to req
+    req.user = decoded; // Attach decoded token data to request
+    req.rootUser = user; // Attach user data to request
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
     console.error("Error verifying token:", error.message);
-    return res
+    res
       .status(401)
-      .json({ success: false, message: "Unauthorized access: Invalid token" });
+      .json({ success: false, message: "Unauthorized: Invalid token" });
   }
 };

@@ -5,7 +5,7 @@ import express from "express";
 //   testcontroller,
 //   fetchalluser,
 // } from "../controller/authcontroller.js"; // Added .js to the path
-import { isAdmin, fetchuser, fetchalldata } from "../midleware/fetchuser.js";
+import { isAdmin, fetchuser } from "../midleware/fetchuser.js";
 import {
   registerController,
   loginController,

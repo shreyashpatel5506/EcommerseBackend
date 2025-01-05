@@ -13,7 +13,8 @@
     "react-helmet": "^6.1.0",
     "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
-    "react-toastify": "^11.0.2"
+    "react-toastify": "^11.0.2",
+    "web-vitals": "^4.2.4"
   },
   "scripts": {
     "start": "react-scripts start",

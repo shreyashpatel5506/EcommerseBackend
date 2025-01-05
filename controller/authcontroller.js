@@ -55,7 +55,12 @@ export const registerController = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
-      user: { id: user._id, name: user.name, email: user.email },
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
       token,
     });
   } catch (error) {
@@ -94,7 +99,12 @@ export const loginController = async (req, res) => {
     return res.json({
       success: true,
       token,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (error) {
     console.error(error.message);
