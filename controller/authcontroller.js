@@ -2,7 +2,6 @@ import Usermodels from "../models/Usermodels.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-// Use environment variables for sensitive data
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret_key";
 
 // Register Controller
@@ -94,7 +93,7 @@ export const loginController = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "1h" });
 
     return res.json({
       success: true,

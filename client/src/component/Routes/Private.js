@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Spinner";
 import { useAuth } from "../../Context/auth";
 
 export default function PrivateRoute() {
   const [ok, setOk] = useState(false);
-  const [auth, setAuth] = useAuth(); // Destructure `auth` directly as `setAuth` isn't used here.
+  const [auth] = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const authCheck = async () => {
@@ -20,23 +21,30 @@ export default function PrivateRoute() {
           }
         );
 
+        // If the user is authenticated, check their role
         if (res.data?.ok) {
-          setOk(true); // Set `ok` to true if the user is authenticated
+          if (res.data.role === "Admin") {
+            // Redirect to the admin dashboard if the user is an admin
+            navigate("/dashboard/admin");
+          } else {
+            // Proceed to the user dashboard if the user is a regular user
+            setOk(true);
+          }
         } else {
           setOk(false);
         }
       } catch (error) {
         console.error("Error during authentication check:", error.message);
-        setOk(false); // Set `ok` to false in case of an error
+        setOk(false);
       }
     };
 
     if (auth?.token) {
       authCheck(); // Call `authCheck` only if the token is available
     } else {
-      setOk(false); // If no token, set `ok` to false
+      setOk(false);
     }
-  }, [auth?.token]); // Re-run the effect only if `auth?.token` changes
+  }, [auth?.token, navigate]);
 
   return ok ? <Outlet /> : <Spinner />; // Render `Outlet` if authenticated, otherwise show `Spinner`
 }

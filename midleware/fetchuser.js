@@ -1,7 +1,7 @@
 import JWT from "jsonwebtoken";
 import Usermodels from "../models/Usermodels.js";
 
-const JWT_SECRET = process.env.JWT_SECRET || "default_secret_key"; // Use environment variables for sensitive data
+const JWT_SECRET = process.env.JWT_SECRET || "default_secret_key";
 
 // Middleware to fetch user from the token
 export const fetchuser = async (req, res, next) => {
@@ -15,6 +15,7 @@ export const fetchuser = async (req, res, next) => {
 
     const decoded = JWT.verify(token, JWT_SECRET);
     req.user = decoded; // Attach decoded token data to request
+    console.log("Decoded Token:", req.user); // Debugging decoded token
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
     console.error("Error verifying token:", error.message);
@@ -24,56 +25,36 @@ export const fetchuser = async (req, res, next) => {
   }
 };
 
-// Middleware to check admin access
+// Middleware to verify if the user is an admin
 export const isAdmin = async (req, res, next) => {
   try {
+    // Fetch user from the database using the `_id` in `req.user`
     const user = await Usermodels.findById(req.user._id);
+
+    // Check if the user exists
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
-    if (user.role !== "admin") {
-      return res
-        .status(403)
-        .json({ success: false, message: "Forbidden: Admin access required" });
+    // Check if the user role is Admin
+    if (user.role !== "Admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden: Admin access required",
+      });
     }
 
-    next(); // User is admin, proceed to the next middleware or route handler
+    // User is admin, proceed to the next middleware or route handler
+    req.user.role = user.role;
+    next();
   } catch (error) {
     console.error("Admin Check Error:", error.message);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
-  }
-};
-
-// Middleware to fetch all data based on token
-export const fetchalldata = async (req, res, next) => {
-  const token = req.headers["jwtdata"]; // Extract token from custom header
-
-  if (!token) {
-    return res
-      .status(401)
-      .json({ success: false, message: "Access denied: No token provided" });
-  }
-
-  try {
-    const decoded = JWT.verify(token, JWT_SECRET);
-    const user = await Usermodels.findById(decoded.id).select("-password"); // Exclude password
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
-
-    req.user = decoded; // Attach decoded token data to request
-    req.rootUser = user; // Attach user data to request
-    next(); // Proceed to the next middleware or route handler
-  } catch (error) {
-    console.error("Error verifying token:", error.message);
-    res
-      .status(401)
-      .json({ success: false, message: "Unauthorized: Invalid token" });
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
   }
 };

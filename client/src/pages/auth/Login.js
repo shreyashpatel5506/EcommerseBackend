@@ -34,7 +34,9 @@ const Login = () => {
           token: res.data.token, // Updated key
         });
         localStorage.setItem("auth", JSON.stringify(res.data));
-        navigate("/dashboard", { replace: true });
+        navigate(
+          `/dashboard/${res.data.user.role === "Admin" ? "admin" : "user"}`
+        );
       } else {
         toast.error(res.data.message || "Login failed. Please try again.");
       }

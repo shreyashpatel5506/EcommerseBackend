@@ -75,16 +75,18 @@ const Header = () => {
                   className="nav-link dropdown-toggle"
                   id="navbarDropdown"
                   role="button"
-                  data-toggle="dropdown"
+                  data-bs-toggle="dropdown"
                 >
                   {auth?.user?.name}
                 </Link>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <Link
                     className="dropdown-item"
-                    to={`/dashboard${
-                      auth?.user?.role === "Admin" ? "admin" : "user"
-                    }`}
+                    to={
+                      auth?.user?.role === "Admin"
+                        ? "/dashboard/admin"
+                        : "/dashboard/user"
+                    }
                   >
                     Dashboard
                   </Link>

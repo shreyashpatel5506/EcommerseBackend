@@ -65,7 +65,9 @@ const Register = () => {
         });
 
         localStorage.setItem("auth", JSON.stringify(response.data));
-        navigate("/");
+        navigate(
+          `/dashboard/${auth?.user?.role === "Admin" ? "admin" : "user"}`
+        );
       } else {
         toast.error(json.message || "Registration failed. Please try again.");
       }
@@ -159,6 +161,19 @@ const Register = () => {
                   name="answer"
                   placeholder="Enter your answer"
                   value={answer}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="answer">Role</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="rolerole"
+                  name="role"
+                  placeholder="Enter your answer"
+                  value={role}
                   onChange={handleChange}
                   required
                 />
