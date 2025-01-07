@@ -10,13 +10,19 @@ const AuthProvider = ({ children }) => {
   });
   useEffect(() => {
     const data = localStorage.getItem("auth");
-    if (data && data !== "undefined") {
+    if (data) {
       const parseData = JSON.parse(data);
-      setAuth({
-        user: parseData.user,
-        token: parseData.token,
-        role: parseData.role,
-      });
+      // Validate token (this is a placeholder, replace with actual validation logic)
+      const isValidToken = parseData.token && parseData.token !== "invalid";
+      if (isValidToken) {
+        setAuth({
+          user: parseData.user,
+          token: parseData.token,
+          role: parseData.role,
+        });
+      } else {
+        localStorage.removeItem("auth");
+      }
     }
   }, []);
   return (

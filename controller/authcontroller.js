@@ -49,7 +49,7 @@ export const registerController = async (req, res) => {
     });
 
     // Generate JWT token
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "196h" });
 
     return res.status(201).json({
       success: true,
@@ -93,7 +93,7 @@ export const loginController = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "196h" });
 
     return res.json({
       success: true,

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Spinner";
 import { useAuth } from "../../Context/auth";
@@ -7,7 +7,6 @@ import { useAuth } from "../../Context/auth";
 export default function AdminRoute() {
   const [ok, setOk] = useState(false);
   const [auth] = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const authCheck = async () => {
@@ -16,31 +15,30 @@ export default function AdminRoute() {
           "http://localhost:5020/api/auth/admin-auth",
           {
             headers: {
-              Authorization: `Bearer ${auth?.token}`,
+              Authorization: `Bearer ${auth?.token}`, // Pass the token in the Authorization header
             },
           }
         );
 
-        if (res.data?.ok && res.data.role === "Admin") {
+        // If the user is authenticated, check their role
+        if (res.data?.ok) {
+          // Proceed to the user dashboard if the user is a regular user
           setOk(true);
-          navigate("/dashboard/admin"); // Redirect non-admins to the homepage
         } else {
           setOk(false);
         }
       } catch (error) {
-        console.error("Admin Auth Check Error:", error.message);
+        console.error("Error during authentication check:", error.message);
         setOk(false);
-        navigate("/"); // Redirect in case of an error
       }
     };
 
     if (auth?.token) {
-      authCheck();
+      authCheck(); // Call `authCheck` only if the token is available
     } else {
       setOk(false);
-      navigate("/login"); // Redirect to login if no token is present
     }
-  }, [auth?.token, navigate]);
+  }, [auth?.token]);
 
-  return ok ? <Outlet /> : <Spinner />;
+  return ok ? <Outlet /> : <Spinner />; // Render `Outlet` if authenticated, otherwise show `Spinner`
 }

@@ -5,16 +5,23 @@ const JWT_SECRET = process.env.JWT_SECRET || "default_secret_key";
 
 // Middleware to fetch user from the token
 export const fetchuser = async (req, res, next) => {
+  // Extract token from Authorization header
   try {
-    const token = req.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
-    if (!token) {
+    if (!req.headers.authorization) {
       return res
         .status(401)
         .json({ success: false, message: "Access denied: No token provided" });
     }
 
+    const token = req.headers.authorization.split(" ")[1];
     const decoded = JWT.verify(token, JWT_SECRET);
-    req.user = decoded; // Attach decoded token data to request
+    const user = await Usermodels.findById(decoded.id); // Attach user data to request
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    req.user = user;
     console.log("Decoded Token:", req.user); // Debugging decoded token
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
@@ -48,8 +55,9 @@ export const isAdmin = async (req, res, next) => {
     }
 
     // User is admin, proceed to the next middleware or route handler
-    req.user.role = user.role;
-    next();
+    else {
+      next();
+    }
   } catch (error) {
     console.error("Admin Check Error:", error.message);
     res.status(500).json({
