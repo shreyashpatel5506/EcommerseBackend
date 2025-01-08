@@ -1,6 +1,6 @@
 import React from "react";
 
-import AdinMenu from "./AdinMenu";
+import AdminMenu from "./AdminMenu";
 import Layout from "../../component/layout/Layout";
 
 const AllUser = () => {
@@ -9,7 +9,7 @@ const AllUser = () => {
       <Layout>
         <div className="row">
           <div className="col-md-3">
-            <AdinMenu />
+            <AdminMenu />
           </div>
           <div className="col-md-9">
             <h2>All users</h2>

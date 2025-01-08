@@ -1,17 +1,17 @@
 import React from "react";
-import AdminMenu from "./AdminMenu";
 import Layout from "../../component/layout/Layout";
+import UserMenu from "./UserMenu";
 
-const CreateCategory = () => {
+const Order = () => {
   return (
     <div>
       <Layout>
         <div className="row">
           <div className="col-md-3">
-            <AdminMenu />
+            <UserMenu />
           </div>
           <div className="col-md-9">
-            <h2>Crate Category</h2>
+            <h3>Order</h3>
           </div>
         </div>
       </Layout>
@@ -19,4 +19,4 @@ const CreateCategory = () => {
   );
 };
 
-export default CreateCategory;
+export default Order;
