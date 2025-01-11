@@ -5,28 +5,50 @@ const JWT_SECRET = process.env.JWT_SECRET || "default_secret_key";
 
 // Middleware to fetch user from the token
 export const fetchuser = async (req, res, next) => {
-  // Extract token from Authorization header
   try {
-    if (!req.headers.authorization) {
+    // Log all headers for debugging
+    console.log("Headers:", req.headers);
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      console.error("Authorization header missing");
       return res
         .status(401)
-        .json({ success: false, message: "Access denied: No token provided" });
+        .json({ success: false, message: "No token provided" });
     }
 
-    const token = req.headers.authorization.split(" ")[1];
+    console.log("Authorization Header:", authHeader);
+
+    // Check if the header starts with 'Bearer'
+    if (!authHeader.startsWith("Bearer ")) {
+      console.error("Authorization header does not start with 'Bearer'");
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid token format" });
+    }
+
+    // Extract token
+    const token = authHeader.split(" ")[1];
+    console.log("Extracted Token:", token);
+
+    // Verify the token
     const decoded = JWT.verify(token, JWT_SECRET);
-    const user = await Usermodels.findById(decoded.id); // Attach user data to request
+    console.log("Decoded Token:", decoded);
+
+    // Find user in database
+    const user = await Usermodels.findById(decoded.id);
     if (!user) {
+      console.error("User not found for decoded token");
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
     }
+
     req.user = user;
-    console.log("Decoded Token:", req.user); // Debugging decoded token
-    next(); // Proceed to the next middleware or route handler
+    next();
   } catch (error) {
     console.error("Error verifying token:", error.message);
-    return res
+    res
       .status(401)
       .json({ success: false, message: "Unauthorized: Invalid token" });
   }
@@ -35,10 +57,7 @@ export const fetchuser = async (req, res, next) => {
 // Middleware to verify if the user is an admin
 export const isAdmin = async (req, res, next) => {
   try {
-    // Fetch user from the database using the `_id` in `req.user`
     const user = await Usermodels.findById(req.user._id);
-
-    // Check if the user exists
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -46,7 +65,6 @@ export const isAdmin = async (req, res, next) => {
       });
     }
 
-    // Check if the user role is Admin
     if (user.role !== "Admin") {
       return res.status(403).json({
         success: false,
@@ -54,10 +72,7 @@ export const isAdmin = async (req, res, next) => {
       });
     }
 
-    // User is admin, proceed to the next middleware or route handler
-    else {
-      next();
-    }
+    next();
   } catch (error) {
     console.error("Admin Check Error:", error.message);
     res.status(500).json({
