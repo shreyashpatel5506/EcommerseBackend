@@ -52,13 +52,14 @@ const AllProducts = () => {
                         >
                           <div className="card" style={{ width: "18rem" }}>
                             <img
-                              src="..."
+                              src={`http://localhost:5020/api/product/get-ProductPhoto/${p._id}`}
                               className="card-img-top"
                               alt={p.name || "Product"}
                             />
                             <div className="card-body">
                               <h5 className="card-title">{p.name}</h5>
                               <p className="card-text">{p.description}</p>
+                              <p className="card-text">{p.price}₹</p>
                               {/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
                             </div>
                           </div>
