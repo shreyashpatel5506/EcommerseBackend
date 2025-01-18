@@ -9,7 +9,7 @@ const Header = () => {
   const [auth, setAuth] = useAuth();
   const location = useLocation();
 
-  console.log(auth.role);
+  /* console.log(auth.role);*/
 
   const handleSignOut = () => {
     setAuth({

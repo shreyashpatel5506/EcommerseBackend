@@ -60,9 +60,9 @@ const CreateProduct = () => {
       );
       if (data?.success) {
         toast.success("Product Created Successfully");
-      } else { 
+        navigate("/dashboard/admin/allproducts");
+      } else {
         toast.error(data?.message);
-        navigate("/dashboard/admin/products");
       }
     } catch (error) {
       console.log(error);

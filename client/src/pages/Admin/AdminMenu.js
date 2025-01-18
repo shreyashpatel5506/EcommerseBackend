@@ -20,6 +20,13 @@ const AdinMenu = () => {
         Create Product
       </NavLink>
       <NavLink
+        to="/dashboard/admin/allproducts"
+        className="list-group-item list-group-item-action  p-3"
+        style={{ borderBottom: "2px solid black" }}
+      >
+        All Product
+      </NavLink>
+      <NavLink
         to="/dashboard/admin/users"
         className="list-group-item list-group-item-action  p-3"
         style={{ borderBottom: "2px solid black" }}
