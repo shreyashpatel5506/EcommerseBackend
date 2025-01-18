@@ -4,7 +4,7 @@ import Layout from "../../component/layout/Layout";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CategoryForm from "../../component/categoryform";
+import CategoryForm from "../../component/Forms/categoryform";
 import { Modal } from "antd";
 import { useAuth } from "../../Context/auth";
 
