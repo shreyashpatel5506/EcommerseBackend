@@ -37,34 +37,33 @@ const AllProducts = () => {
             <div className="col-md-9">
               <h1 className="text-center">Products</h1>
 
-              <div className="container">
-                <div className="row">
-                  {Array.isArray(allproducts) &&
-                    allproducts.map((p, index) => (
-                      <div className="col-md-4 d-flex justify-content-center mb-4">
-                        <Link
-                          to={`/dashboard/admin/Product/${p.slug}`}
-                          className="text-dark"
-                          key={p._id}
-                          style={{ textDecorationLine: "none" }}
-                        >
-                          <div className="card" style={{ width: "18rem" }}>
-                            <img
-                              src={`http://localhost:5020/api/product/get-ProductPhoto/${p._id}`}
-                              className="card-img-top"
-                              alt={p.name || "Product"}
-                            />
-                            <div className="card-body">
-                              <h5 className="card-title">{p.name}</h5>
-                              <p className="card-text">{p.description}</p>
-                              <p className="card-text">{p.price}₹</p>
-                              {/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
-                            </div>
+              <div className="row">
+                {Array.isArray(allproducts) &&
+                  allproducts.map((p) => (
+                    <div
+                      className="col-12 col-sm-6 col-md-4 d-flex justify-content-center mb-4"
+                      key={p._id}
+                    >
+                      <Link
+                        to={`/dashboard/admin/Product/${p.slug}`}
+                        className="text-dark"
+                        style={{ textDecorationLine: "none" }}
+                      >
+                        <div className="card" style={{ width: "100%" }}>
+                          <img
+                            src={`http://localhost:5020/api/product/get-ProductPhoto/${p._id}`}
+                            className="card-img-top"
+                            alt={p.name || "Product"}
+                          />
+                          <div className="card-body">
+                            <h5 className="card-title">{p.name}</h5>
+                            <p className="card-text">{p.description}</p>
+                            <p className="card-text">{p.price}₹</p>
                           </div>
-                        </Link>
-                      </div>
-                    ))}
-                </div>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
