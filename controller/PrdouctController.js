@@ -9,7 +9,7 @@ export const addProduct = async (req, res) => {
     const { imageUrl } = req.files;
     if (!name || !description || !price || !category || !stock) {
       return res.status(500).send({
-        error: "All feilds are required",
+        error: "All fields are required",
       });
     }
     if (!imageUrl || imageUrl.size > 1000000) {
@@ -25,7 +25,7 @@ export const addProduct = async (req, res) => {
     await newProduct.save();
     res.status(201).send({
       success: true,
-      message: "Product created successfully",
+      message: "Product updated successfully",
       product: newProduct,
     });
     console.log(newProduct);
@@ -133,15 +133,15 @@ export const UpdateProduct = async (req, res) => {
         error: "All feilds are required",
       });
     }
-    if (!imageUrl || imageUrl.size > 1000000) {
+    if (imageUrl && imageUrl.size > 1000000) {
       return res.status(500).send({
-        error: "Photo must be less than 10 mb",
+        error: "Photo must be less than 1 mb",
       });
     }
     const newProduct = await ProductModel.findByIdAndUpdate(
-      req.params.pid,
+      req.params.id,
       {
-        ...req.feilds,
+        ...req.fields,
         slug: slugify(name),
       },
       { new: true }

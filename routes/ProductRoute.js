@@ -22,8 +22,8 @@ router.get("/get-ProductPhoto/:pid", fetchProductPhoto);
 
 router.delete("/delete-Product/:pid", DeleteProduct);
 
-router.post(
-  "/Update-Product/:pid",
+router.put(
+  "/Update-Product/:id",
   fetchuser,
   isAdmin,
   foridable(),

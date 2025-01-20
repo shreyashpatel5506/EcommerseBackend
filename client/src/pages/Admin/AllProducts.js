@@ -10,7 +10,7 @@ const AllProducts = () => {
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5020/api/product/get-products"
+        "http://localhost:5020/api/product/get-Products"
       );
       console.log("Fetched products:", data);
       if (data.success) {
@@ -41,13 +41,11 @@ const AllProducts = () => {
                 <div className="row">
                   {Array.isArray(allproducts) &&
                     allproducts.map((p, index) => (
-                      <div
-                        key={p._id}
-                        className="col-md-4 d-flex justify-content-center mb-4"
-                      >
+                      <div className="col-md-4 d-flex justify-content-center mb-4">
                         <Link
-                          to={`/dashboard/admin/product/${p.slug}`}
+                          to={`/dashboard/admin/Product/${p.slug}`}
                           className="text-dark"
+                          key={p._id}
                           style={{ textDecorationLine: "none" }}
                         >
                           <div className="card" style={{ width: "18rem" }}>
