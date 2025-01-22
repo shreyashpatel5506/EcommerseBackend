@@ -5,8 +5,10 @@ import {
   addProduct,
   DeleteProduct,
   fetchProductPhoto,
+  filterProductController,
   getProductController,
   getSingleProductController,
+  Productcountontroller,
   UpdateProduct,
 } from "../controller/PrdouctController.js";
 
@@ -30,4 +32,7 @@ router.put(
   UpdateProduct
 );
 
+router.post("/filter-Product", filterProductController);
+
+router.get("/total", Productcountontroller);
 export default router;

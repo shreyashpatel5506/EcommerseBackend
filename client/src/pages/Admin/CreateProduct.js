@@ -47,7 +47,7 @@ const CreateProduct = () => {
       productData.append("description", description);
       productData.append("price", price);
       productData.append("stock", stock);
-      // productData.append("imageUrl", imageUrl);
+      productData.append("imageUrl", imageUrl);
       productData.append("category", category);
       const { data } = await axios.post(
         "http://localhost:5020/api/product/Create-Product",
@@ -81,7 +81,6 @@ const CreateProduct = () => {
             <h1>Create Product</h1>
             <div className="m-1 w-75">
               <Select
-                bordered={false}
                 placeholder="Select a category"
                 size="large"
                 showSearch

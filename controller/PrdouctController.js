@@ -12,9 +12,9 @@ export const addProduct = async (req, res) => {
         error: "All fields are required",
       });
     }
-    if (!imageUrl || imageUrl.size > 1000000) {
-      return res.status(500).send({
-        error: "Photo must be less than 10 mb",
+    if (!imageUrl) {
+      return res.status(400).send({
+        error: "Photo required",
       });
     }
     const newProduct = new ProductModel({ ...req.fields, slug: slugify(name) });
@@ -25,7 +25,7 @@ export const addProduct = async (req, res) => {
     await newProduct.save();
     res.status(201).send({
       success: true,
-      message: "Product updated successfully",
+      message: "Product created successfully",
       product: newProduct,
     });
     console.log(newProduct);
@@ -133,7 +133,7 @@ export const UpdateProduct = async (req, res) => {
         error: "All feilds are required",
       });
     }
-    if (imageUrl && imageUrl.size > 1000000) {
+    if (imageUrl) {
       return res.status(500).send({
         error: "Photo must be less than 1 mb",
       });
@@ -162,6 +162,70 @@ export const UpdateProduct = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error during creating a product",
+      error,
+    });
+  }
+};
+
+export const filterProductController = async (req, res) => {
+  try {
+    const { selectedCategories = [], price = [] } = req.body;
+    let args = {};
+    if (selectedCategories.length > 0) {
+      args.category = { $in: selectedCategories };
+    }
+    if (price.length > 0) {
+      args.price = { $gte: price[0], $lte: price[1] };
+    }
+
+    const filterProduct = await ProductModel.find(args);
+
+    return res.status(200).send({
+      success: true,
+      message: "Filtered Products",
+      getProducts: filterProduct,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting products",
+      error,
+    });
+  }
+};
+
+export const searchProductController = async (req, res) => {
+  try {
+    const { query } = req.body;
+    const products = await ProductModel.find({
+      $text: { $search: query },
+    }).select("-imageUrl");
+    return res.status(200).send({
+      success: true,
+      message: "Search results",
+      products,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      message: "Error during searching products",
+      error,
+    });
+  }
+};
+
+export const Productcountontroller = async (req, res) => {
+  try {
+    const count = await ProductModel.find({}).countDocuments();
+    res.status(200).send({
+      success: true,
+      message: "Total Products",
+      count,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting a product",
       error,
     });
   }
