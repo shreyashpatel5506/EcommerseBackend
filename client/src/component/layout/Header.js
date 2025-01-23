@@ -20,7 +20,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="bg-gray-900 text-white">
+    <nav className="bg-gray-900 text-white sticky top-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -29,64 +29,107 @@ const Header = () => {
             <span className="text-xl font-bold">E-shop</span>
           </Link>
 
+          {/* Navbar Links for Desktop */}
+          <div className="hidden md:flex space-x-4">
+            {[
+              { path: "/", label: "Home" },
+              { path: "/about", label: "About" },
+              { path: "/services", label: "Services" },
+              { path: "/pricing", label: "Pricing" },
+              { path: "/contact", label: "Contact" },
+            ].map(({ path, label }) => (
+              <Link
+                key={path}
+                to={path}
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  location.pathname === path
+                    ? "text-blue-500 font-bold"
+                    : "hover:text-blue-400"
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+
           {/* User Menu and Hamburger */}
           <div className="flex items-center space-x-4">
-            {/* User Menu */}
-            <div className="relative">
-              <button
-                onClick={() => setUserMenuOpen(!isUserMenuOpen)}
-                className="bg-gray-800 rounded-full p-1 focus:outline-none"
-              >
-                <span className="sr-only">Open user menu</span>
-                <img
-                  className="w-8 h-8 rounded-full"
-                  src="/docs/images/people/profile-picture-3.jpg"
-                  alt="User"
-                />
-              </button>
-              {isUserMenuOpen && (
-                <div
-                  className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg"
-                  style={{ zIndex: 1000 }}
+            {/* Sign Up and Login Links */}
+            {!auth?.token && (
+              <>
+                <Link
+                  to="/register"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:text-blue-400"
                 >
-                  <div className="px-4 py-3">
-                    <span className="block text-sm">
-                      {auth?.user?.name || "User"}
-                    </span>
-                    <span className="block text-sm text-gray-500">
-                      {auth?.user?.email || "email@example.com"}
-                    </span>
+                  Sign Up
+                </Link>
+                <Link
+                  to="/login"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:text-blue-400"
+                >
+                  Login
+                </Link>
+              </>
+            )}
+
+            {/* User Menu */}
+            {auth?.token && (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!isUserMenuOpen)}
+                  className="bg-gray-800 rounded-full p-1 focus:outline-none"
+                >
+                  <span className="sr-only">Open user menu</span>
+                  <img
+                    className="w-8 h-8 rounded-full"
+                    src="/docs/images/people/profile-picture-3.jpg"
+                    alt="User"
+                  />
+                </button>
+                {isUserMenuOpen && (
+                  <div
+                    className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg"
+                    style={{ zIndex: 1000 }}
+                  >
+                    <div className="px-4 py-3">
+                      <span className="block text-sm">
+                        {auth?.user?.name || "User"}
+                      </span>
+                      <span className="block text-sm text-gray-500">
+                        {auth?.user?.email || "email@example.com"}
+                      </span>
+                    </div>
+                    <ul className="py-2">
+                      <li>
+                        <Link
+                          to={
+                            auth?.user?.role === "Admin"
+                              ? "/dashboard/admin"
+                              : "/dashboard/user"
+                          }
+                          className="block px-4 py-2 hover:bg-gray-100"
+                        >
+                          Dashboard
+                        </Link>
+                      </li>
+                      <li>
+                        <button
+                          onClick={handleSignOut}
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                        >
+                          Sign out
+                        </button>
+                      </li>
+                    </ul>
                   </div>
-                  <ul className="py-2">
-                    <li>
-                      <Link
-                        to={
-                          auth?.user?.role === "Admin"
-                            ? "/dashboard/admin"
-                            : "/dashboard/user"
-                        }
-                        className="block px-4 py-2 hover:bg-gray-100"
-                      >
-                        Dashboard
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={handleSignOut}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                      >
-                        Sign out
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
 
             {/* Hamburger Menu */}
             <button
               onClick={() => setNavbarOpen(!isNavbarOpen)}
-              className="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-white"
+              className="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-white md:hidden"
             >
               <svg
                 className="w-6 h-6"
@@ -109,9 +152,9 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed top-0 left-0 h-full bg-gray-900 text-white transform transition-transform ${
+        className={`fixed top-75 left-0 h-full bg-gray-900 text-white transform transition-transform ${
           isNavbarOpen ? "translate-x-0" : "-translate-x-full"
-        } w-1/2 z-50`}
+        } w-1/2 z-50 md:hidden`}
       >
         <ul className="space-y-6 mt-16 px-6">
           {[
