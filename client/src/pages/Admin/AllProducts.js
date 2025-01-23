@@ -58,6 +58,7 @@ const AllProducts = () => {
                               className="p-2 rounded-t-lg"
                               src={`http://localhost:5020/api/product/get-ProductPhoto/${p._id}`}
                               alt={p.name || "Product"}
+                              style={{ width: "100%", height: "350px" }}
                             />
                           </a>
                           <div className="px-5 pb-5">

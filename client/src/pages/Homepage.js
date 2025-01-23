@@ -10,7 +10,7 @@ const Homepage = () => {
   const [categories, setCategories] = useState([]);
   const [allproducts, setAllproducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 25000]);
+  const [priceRange, setPriceRange] = useState([0, 250000]);
 
   const getAllProducts = async () => {
     try {
@@ -119,6 +119,7 @@ const Homepage = () => {
                             className="p-2 rounded-t-lg"
                             src={`http://localhost:5020/api/product/get-ProductPhoto/${p._id}`}
                             alt={p.name || "Product"}
+                            style={{ width: "100%", height: "350px" }}
                           />
                         </a>
                         <div className="px-5 pb-5">

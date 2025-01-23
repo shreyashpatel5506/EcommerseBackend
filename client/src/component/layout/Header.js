@@ -80,11 +80,12 @@ const Header = () => {
                   className="bg-gray-800 rounded-full p-1 focus:outline-none"
                 >
                   <span className="sr-only">Open user menu</span>
-                  <img
+                  {/* <img
                     className="w-8 h-8 rounded-full"
                     src="/docs/images/people/profile-picture-3.jpg"
                     alt="User"
-                  />
+                  /> */}
+                  <i className="fa-solid fa-user-tie p-3"></i>
                 </button>
                 {isUserMenuOpen && (
                   <div
