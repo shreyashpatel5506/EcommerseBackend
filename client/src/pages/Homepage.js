@@ -11,14 +11,20 @@ const Homepage = () => {
   const [allproducts, setAllproducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 250000]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
 
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5020/api/product/get-Products"
+        `http://localhost:5020/api/product/perpageProduct/${page}`
       );
       if (data.success) {
-        setAllproducts(data.getProducts);
+        if (page === 1) {
+          setAllproducts(data.products);
+        } else {
+          setAllproducts((prevProducts) => [...prevProducts, ...data.products]);
+        }
       }
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -27,7 +33,20 @@ const Homepage = () => {
 
   useEffect(() => {
     getAllProducts();
-  }, []);
+    getTotals();
+  }, [page]);
+  const getTotals = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5020/api/product/total`
+      );
+      if (data.success) {
+        setTotal(data.count);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   const getAllcategories = async () => {
     try {
@@ -79,7 +98,18 @@ const Homepage = () => {
         <div className="container-fluid m-3 p-3 mx-0">
           <div className="row">
             <div className="col-md-3">
-              <h5>Filter</h5>
+              <div className="d-flex flex-row justify-content-between">
+                <h5>Filter</h5>
+                <span
+                  className="btn-danger"
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  Reset Filter
+                </span>
+              </div>
               <div className="d-flex flex-column">
                 <Checkbox.Group
                   options={categories.map((c) => ({
@@ -114,23 +144,23 @@ const Homepage = () => {
                         className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                         style={{ width: "100%" }}
                       >
-                        <a href="/">
+                        <span href="/">
                           <img
                             className="p-2 rounded-t-lg"
                             src={`http://localhost:5020/api/product/get-ProductPhoto/${p._id}`}
                             alt={p.name || "Product"}
                             style={{ width: "100%", height: "350px" }}
                           />
-                        </a>
+                        </span>
                         <div className="px-5 pb-5">
-                          <a href="/">
+                          <span href="/">
                             <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                               {p.name}
                             </h5>
                             <h5 className="text-m  tracking-tight text-gray-900 dark:text-white">
                               {p.description.substring(0, 50)}...
                             </h5>
-                          </a>
+                          </span>
                           <div className="flex items-center mt-2.5 mb-5">
                             <div className="flex items-center space-x-1 rtl:space-x-reverse">
                               <svg
@@ -190,7 +220,7 @@ const Homepage = () => {
                           </div>
                           {/* <button
                             type="button"
-                            class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                           >
                             Add to Cart
                           </button> */}
@@ -200,7 +230,7 @@ const Homepage = () => {
                             style={{ width: "100%" }}
                           >
                             <svg
-                              class="w-3.5 h-3.5 me-2"
+                              className="w-3.5 h-3.5 me-2"
                               aria-hidden="true"
                               xmlns="http://www.w3.org/2000/svg"
                               fill="currentColor"
@@ -214,6 +244,103 @@ const Homepage = () => {
                       </div>
                     </div>
                   ))}
+              </div>
+              <div className="text-center">Total Products: {total}</div>
+              <div
+                className="m-2 p-3"
+                style={{ width: "100%", cursor: "pointer" }}
+              >
+                <nav aria-label="Page navigation example">
+                  <ul className="inline-flex -space-x-px text-sm">
+                    <li>
+                      <span
+                        href="/"
+                        className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setPage(page - 1);
+                        }}
+                        disable={page === 1}
+                      >
+                        Previous
+                      </span>
+                    </li>
+                    <li>
+                      <span
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setPage(1);
+                        }}
+                      >
+                        1
+                      </span>
+                    </li>
+                    <li>
+                      <span
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setPage(2);
+                        }}
+                      >
+                        2
+                      </span>
+                    </li>
+                    <li>
+                      <span
+                        href="#"
+                        aria-current="page"
+                        className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setPage(3);
+                        }}
+                      >
+                        3
+                      </span>
+                    </li>
+                    <li>
+                      <span
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setPage(4);
+                        }}
+                      >
+                        4
+                      </span>
+                    </li>
+                    <li>
+                      <span
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setPage(5);
+                        }}
+                      >
+                        5
+                      </span>
+                    </li>
+                    <li>
+                      <span
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setPage(page + 1);
+                        }}
+                        disable={total > allproducts.length}
+                      >
+                        Next
+                      </span>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>

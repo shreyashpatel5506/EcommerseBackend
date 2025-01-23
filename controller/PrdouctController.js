@@ -230,3 +230,26 @@ export const Productcountontroller = async (req, res) => {
     });
   }
 };
+
+export const PerPageController = async (req, res) => {
+  try {
+    const Productperpage = 1;
+    const page = req.params.page ? req.params.page : 1;
+    const products = await ProductModel.find()
+      .limit(Productperpage)
+      .select("-imageUrl")
+      .skip((page - 1) * Productperpage)
+      .sort({ createdAt: -1 });
+    return res.status(200).send({
+      success: true,
+      message: "Products per page",
+      products,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting products",
+      error,
+    });
+  }
+};
