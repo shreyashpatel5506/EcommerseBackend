@@ -251,9 +251,12 @@ const Homepage = () => {
                 style={{ width: "100%", cursor: "pointer" }}
               >
                 <nav aria-label="Page navigation example">
-                  <ul className="inline-flex -space-x-px text-sm">
-                    <li>
-                      <span
+                  <div
+                    className="inline-flex mt-2 xs:mt-0"
+                    style={{ justifyContent: "between", width: "100%" }}
+                  >
+                    <span>
+                      {/* <span
                         href="/"
                         className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                         onClick={(e) => {
@@ -263,71 +266,36 @@ const Homepage = () => {
                         disable={page === 1}
                       >
                         Previous
-                      </span>
-                    </li>
-                    <li>
-                      <span
-                        href="#"
-                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                      </span> */}
+                      <button
+                        className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                         onClick={(e) => {
                           e.preventDefault();
-                          setPage(1);
+                          setPage(page - 1);
                         }}
+                        disable={page === 1}
                       >
-                        1
-                      </span>
-                    </li>
-                    <li>
-                      <span
-                        href="#"
-                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setPage(2);
-                        }}
-                      >
-                        2
-                      </span>
-                    </li>
-                    <li>
-                      <span
-                        href="#"
-                        aria-current="page"
-                        className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setPage(3);
-                        }}
-                      >
-                        3
-                      </span>
-                    </li>
-                    <li>
-                      <span
-                        href="#"
-                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setPage(4);
-                        }}
-                      >
-                        4
-                      </span>
-                    </li>
-                    <li>
-                      <span
-                        href="#"
-                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setPage(5);
-                        }}
-                      >
-                        5
-                      </span>
-                    </li>
-                    <li>
-                      <span
+                        <svg
+                          className="w-3.5 h-3.5 me-2 rtl:rotate-180"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 14 10"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 5H1m0 0 4 4M1 5l4-4"
+                          />
+                        </svg>
+                        Prev
+                      </button>
+                    </span>
+
+                    <span>
+                      {/*<span
                         href="#"
                         className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                         onClick={(e) => {
@@ -337,9 +305,34 @@ const Homepage = () => {
                         disable={total > allproducts.length}
                       >
                         Next
-                      </span>
-                    </li>
-                  </ul>
+                      </span> */}
+                      <button
+                        className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setPage(page + 1);
+                        }}
+                        disable={total > allproducts.length}
+                      >
+                        Next
+                        <svg
+                          className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 14 10"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9"
+                          />
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
                 </nav>
               </div>
             </div>
