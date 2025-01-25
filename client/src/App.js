@@ -19,12 +19,14 @@ import Order from "./pages/user/Order";
 import Profile from "./pages/user/Profile";
 import AllProducts from "./pages/Admin/AllProducts";
 import UpdateProduct from "./pages/Admin/updateProduct";
+import SearhProduct from "./pages/SearhProduct";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/search" element={<SearhProduct />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />

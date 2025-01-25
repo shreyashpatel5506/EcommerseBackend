@@ -196,16 +196,22 @@ export const filterProductController = async (req, res) => {
 
 export const searchProductController = async (req, res) => {
   try {
-    const { query } = req.body;
+    const { query } = req.params;
+    if (!query) {
+      return res.status(400).send({
+        success: false,
+        message: "Query parameter is required",
+      });
+    }
     const products = await ProductModel.find({
-      $text: { $search: query },
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+      ],
     }).select("-imageUrl");
-    return res.status(200).send({
-      success: true,
-      message: "Search results",
-      products,
-    });
+    res.json({ success: true, products });
   } catch (error) {
+    console.log(error);
     return res.status(500).send({
       success: false,
       message: "Error during searching products",

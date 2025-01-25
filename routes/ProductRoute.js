@@ -10,6 +10,7 @@ import {
   getSingleProductController,
   PerPageController,
   Productcountontroller,
+  searchProductController,
   UpdateProduct,
 } from "../controller/PrdouctController.js";
 
@@ -38,4 +39,7 @@ router.post("/filter-Product", filterProductController);
 router.get("/total", Productcountontroller);
 
 router.get("/perpageProduct/:page", PerPageController);
+
+router.get("/search/:query", searchProductController);
+
 export default router;
