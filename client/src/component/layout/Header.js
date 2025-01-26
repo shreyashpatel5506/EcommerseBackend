@@ -30,7 +30,7 @@ const Header = () => {
         `http://localhost:5020/api/product/search/${values.query}`
       );
       if (data.success) {
-        setValues({ ...values, products: data });
+        setValues({ ...values, products: data.products });
         Navigate("/search");
       }
     } catch (error) {
