@@ -6,21 +6,49 @@ import Product from "../models/ProductModel.js";
 export const addProduct = async (req, res) => {
   try {
     const { name, description, price, category, stock } = req.fields;
-    const { imageUrl } = req.files;
+    const {
+      MainImage,
+      thubnailimage1,
+      thubnailimage2,
+      thubnailimage3,
+      thubnailimage4,
+      thubnailimage5,
+    } = req.files;
     if (!name || !description || !price || !category || !stock) {
       return res.status(500).send({
         error: "All fields are required",
       });
     }
-    if (!imageUrl) {
+    if (!MainImage) {
       return res.status(400).send({
         error: "Photo required",
       });
     }
     const newProduct = new ProductModel({ ...req.fields, slug: slugify(name) });
-    if (imageUrl) {
-      newProduct.imageUrl.data = fs.readFileSync(imageUrl.path);
-      newProduct.contentType = imageUrl.type;
+    if (MainImage) {
+      newProduct.MainImage.data = fs.readFileSync(MainImage.path);
+      newProduct.contentType = MainImage.type;
+      thubnailimage3;
+    }
+    if (thubnailimage1) {
+      newProduct.thubnailimage1.data = fs.readFileSync(thubnailimage1.path);
+      newProduct.contentType = thubnailimage1.type;
+    }
+    if (thubnailimage2) {
+      newProduct.thubnailimage2.data = fs.readFileSync(thubnailimage2.path);
+      newProduct.contentType = thubnailimage2.type;
+    }
+    if (thubnailimage3) {
+      newProduct.thubnailimage3.data = fs.readFileSync(thubnailimage3.path);
+      newProduct.contentType = thubnailimage3.type;
+    }
+    if (thubnailimage4) {
+      newProduct.thubnailimage4.data = fs.readFileSync(thubnailimage4.path);
+      newProduct.contentType = thubnailimage4.type;
+    }
+    if (thubnailimage5) {
+      newProduct.thubnailimage5.data = fs.readFileSync(thubnailimage5.path);
+      newProduct.contentType = thubnailimage5.type;
     }
     await newProduct.save();
     res.status(201).send({
@@ -42,7 +70,7 @@ export const addProduct = async (req, res) => {
 export const getProductController = async (req, res) => {
   try {
     const getProducts = await ProductModel.find({})
-      .select("-imageUrl")
+      .select("-MainImage")
       .limit(12)
 
       .sort({ createdAt: -1 });
@@ -65,7 +93,7 @@ export const getSingleProductController = async (req, res) => {
   try {
     const product = await ProductModel.findOne({
       slug: req.params.slug,
-    }).select("-imageUrl");
+    }).select("-MainImage");
 
     if (!product) {
       return res.status(404).send({
@@ -90,11 +118,124 @@ export const getSingleProductController = async (req, res) => {
 export const fetchProductPhoto = async (req, res) => {
   try {
     const ProductPhoto = await ProductModel.findById(req.params.pid).select(
-      "imageUrl"
+      "MainImage"
     );
-    if (ProductPhoto.imageUrl.data) {
-      res.set("Content-type", ProductPhoto.imageUrl.contentType);
-      return res.status(200).send(ProductPhoto.imageUrl.data);
+    if (ProductPhoto && ProductPhoto.MainImage && ProductPhoto.MainImage.data) {
+      res.set("Content-type", ProductPhoto.MainImage.contentType);
+      return res.status(200).send(ProductPhoto.MainImage.data);
+    }
+  } catch (error) {
+    console.log("error::" + error);
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting a product image",
+      error,
+    });
+  }
+};
+export const fetchProductthubnailimage1 = async (req, res) => {
+  try {
+    const ProductPhoto = await ProductModel.findById(req.params.pid).select(
+      "thubnailimage1"
+    );
+    if (
+      ProductPhoto &&
+      ProductPhoto.thubnailimage1 &&
+      ProductPhoto.thubnailimage1.data
+    ) {
+      res.set("Content-type", ProductPhoto.thubnailimage1.contentType);
+      return res.status(200).send(ProductPhoto.thubnailimage1.data);
+    }
+  } catch (error) {
+    console.log("error::" + error);
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting a product image",
+      error,
+    });
+  }
+};
+export const fetchProductthubnailimage2 = async (req, res) => {
+  try {
+    const ProductPhoto = await ProductModel.findById(req.params.pid).select(
+      "thubnailimage2"
+    );
+    if (
+      ProductPhoto &&
+      ProductPhoto.thubnailimage2 &&
+      ProductPhoto.thubnailimage2.data
+    ) {
+      res.set("Content-type", ProductPhoto.thubnailimage2.contentType);
+      return res.status(200).send(ProductPhoto.thubnailimage2.data);
+    }
+  } catch (error) {
+    console.log("error::" + error);
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting a product image",
+      error,
+    });
+  }
+};
+
+export const fetchProductthubnailimage3 = async (req, res) => {
+  try {
+    const ProductPhoto = await ProductModel.findById(req.params.pid).select(
+      "thubnailimage3"
+    );
+    if (
+      ProductPhoto &&
+      ProductPhoto.thubnailimage3 &&
+      ProductPhoto.thubnailimage3.data
+    ) {
+      res.set("Content-type", ProductPhoto.thubnailimage3.contentType);
+      return res.status(200).send(ProductPhoto.thubnailimage3.data);
+    }
+  } catch (error) {
+    console.log("error::" + error);
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting a product image",
+      error,
+    });
+  }
+};
+
+export const fetchProductthubnailimage4 = async (req, res) => {
+  try {
+    const ProductPhoto = await ProductModel.findById(req.params.pid).select(
+      "thubnailimage4"
+    );
+    if (
+      ProductPhoto &&
+      ProductPhoto.thubnailimage4 &&
+      ProductPhoto.thubnailimage4.data
+    ) {
+      res.set("Content-type", ProductPhoto.thubnailimage4.contentType);
+      return res.status(200).send(ProductPhoto.thubnailimage4.data);
+    }
+  } catch (error) {
+    console.log("error::" + error);
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting a product image",
+      error,
+    });
+  }
+};
+
+export const fetchProductthubnailimage5 = async (req, res) => {
+  try {
+    const ProductPhoto = await ProductModel.findById(req.params.pid).select(
+      "thubnailimage5"
+    );
+    if (
+      ProductPhoto &&
+      ProductPhoto.thubnailimage5 &&
+      ProductPhoto.thubnailimage5.data
+    ) {
+      res.set("Content-type", ProductPhoto.thubnailimage5.contentType);
+      return res.status(200).send(ProductPhoto.thubnailimage5.data);
     }
   } catch (error) {
     console.log("error::" + error);
@@ -127,13 +268,20 @@ export const DeleteProduct = async (req, res) => {
 export const UpdateProduct = async (req, res) => {
   try {
     const { name, description, price, category, stock } = req.fields;
-    const { imageUrl } = req.files;
+    const {
+      MainImage,
+      thubnailimage1,
+      thubnailimage2,
+      thubnailimage3,
+      thubnailimage4,
+      thubnailimage5,
+    } = req.files;
     if (!name || !description || !price || !category || !stock) {
       return res.status(500).send({
         error: "All feilds are required",
       });
     }
-    if (imageUrl) {
+    if (MainImage) {
       return res.status(500).send({
         error: "Photo must be less than 1 mb",
       });
@@ -146,9 +294,29 @@ export const UpdateProduct = async (req, res) => {
       },
       { new: true }
     );
-    if (imageUrl) {
-      newProduct.imageUrl.data = fs.readFileSync(imageUrl.path);
-      newProduct.contentType = imageUrl.type;
+    if (MainImage) {
+      newProduct.MainImage.data = fs.readFileSync(MainImage.path);
+      newProduct.contentType = MainImage.type;
+    }
+    if (thubnailimage1) {
+      newProduct.thubnailimage1.data = fs.readFileSync(thubnailimage1.path);
+      newProduct.contentType = thubnailimage1.type;
+    }
+    if (thubnailimage2) {
+      newProduct.thubnailimage2.data = fs.readFileSync(thubnailimage2.path);
+      newProduct.contentType = thubnailimage2.type;
+    }
+    if (thubnailimage3) {
+      newProduct.thubnailimage3.data = fs.readFileSync(thubnailimage3.path);
+      newProduct.contentType = thubnailimage3.type;
+    }
+    if (thubnailimage4) {
+      newProduct.thubnailimage4.data = fs.readFileSync(thubnailimage4.path);
+      newProduct.contentType = thubnailimage4.type;
+    }
+    if (thubnailimage5) {
+      newProduct.thubnailimage5.data = fs.readFileSync(thubnailimage5.path);
+      newProduct.contentType = thubnailimage5.type;
     }
     await newProduct.save();
     res.status(201).send({
@@ -208,7 +376,7 @@ export const searchProductController = async (req, res) => {
         { name: { $regex: query, $options: "i" } },
         { description: { $regex: query, $options: "i" } },
       ],
-    }).select("-imageUrl");
+    }).select("-MainImage");
     res.json({ success: true, products });
   } catch (error) {
     console.log(error);
@@ -243,7 +411,7 @@ export const PerPageController = async (req, res) => {
     const page = req.params.page ? req.params.page : 1;
     const products = await ProductModel.find()
       .limit(Productperpage)
-      .select("-imageUrl")
+      .select("-MainImage")
       .skip((page - 1) * Productperpage)
       .sort({ createdAt: -1 });
     return res.status(200).send({

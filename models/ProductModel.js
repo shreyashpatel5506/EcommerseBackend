@@ -32,7 +32,27 @@ const productSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    imageUrl: {
+    MainImage: {
+      contentType: String,
+      data: Buffer,
+    },
+    thubnailimage1: {
+      contentType: String,
+      data: Buffer,
+    },
+    thubnailimage2: {
+      contentType: String,
+      data: Buffer,
+    },
+    thubnailimage3: {
+      contentType: String,
+      data: Buffer,
+    },
+    thubnailimage4: {
+      contentType: String,
+      data: Buffer,
+    },
+    thubnailimage5: {
       contentType: String,
       data: Buffer,
     },

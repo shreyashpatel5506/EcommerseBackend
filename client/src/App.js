@@ -20,6 +20,7 @@ import Profile from "./pages/user/Profile";
 import AllProducts from "./pages/Admin/AllProducts";
 import UpdateProduct from "./pages/Admin/updateProduct";
 import SearhProduct from "./pages/SearhProduct";
+import SingleProduct from "./pages/SingleProduct";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/singleProduct/:slug" element={<SingleProduct />} />
 
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />
@@ -44,6 +46,7 @@ function App() {
           <Route path="admin/create-category" element={<CreateCategory />} />
           <Route path="admin/create-product" element={<CreateProduct />} />
           <Route path="admin/Product/:slug" element={<UpdateProduct />} />
+
           <Route path="admin/allproducts" element={<AllProducts />} />
           <Route path="admin/users" element={<AllUser />} />
         </Route>
