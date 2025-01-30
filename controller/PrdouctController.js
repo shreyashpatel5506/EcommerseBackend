@@ -455,3 +455,25 @@ export const relatedProduct = async (req, res) => {
     });
   }
 };
+
+export const getProductsByCategoryId = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    const products = await ProductModel.find({ category: categoryId }).select(
+      "-MainImage"
+    );
+    console.log(products);
+    return res.status(200).send({
+      success: true,
+      message: "Products fetched successfully",
+      products,
+    });
+  } catch (error) {
+    console.log("error::" + error);
+    return res.status(500).send({
+      success: false,
+      message: "Error during fetching products by category",
+      error,
+    });
+  }
+};

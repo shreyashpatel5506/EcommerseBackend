@@ -5,6 +5,7 @@ import axios from "axios";
 import { Checkbox } from "antd";
 import { Slider } from "antd";
 import { Link } from "react-router-dom";
+import Category from "../component/layout/category";
 
 const Homepage = () => {
   const [auth, setAuth] = useAuth();
@@ -96,6 +97,7 @@ const Homepage = () => {
   return (
     <div>
       <Layout title={"Best Offer - Ecommerse"} description={"Homepage"}>
+        <Category />
         <div className="container-fluid m-3 p-3 mx-0">
           <div className="row">
             <div className="col-md-3">

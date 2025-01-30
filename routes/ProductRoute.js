@@ -12,6 +12,7 @@ import {
   fetchProductthubnailimage5,
   filterProductController,
   getProductController,
+  getProductsByCategoryId,
   getSingleProductController,
   PerPageController,
   Productcountontroller,
@@ -53,5 +54,7 @@ router.get("/perpageProduct/:page", PerPageController);
 router.get("/search/:query", searchProductController);
 
 router.get("/relatedProduct/:pid/:cid", relatedProduct);
+
+router.get("/get-productbycategory/:id", getProductsByCategoryId);
 
 export default router;

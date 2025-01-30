@@ -21,6 +21,7 @@ import AllProducts from "./pages/Admin/AllProducts";
 import UpdateProduct from "./pages/Admin/updateProduct";
 import SearhProduct from "./pages/SearhProduct";
 import SingleProduct from "./pages/SingleProduct";
+import CategoryProducts from "./pages/CategoryProducts";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/singleProduct/:slug" element={<SingleProduct />} />
+        <Route path="/category/:slug" element={<CategoryProducts />} />
 
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />
