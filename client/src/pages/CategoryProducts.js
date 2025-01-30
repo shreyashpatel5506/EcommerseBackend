@@ -18,8 +18,8 @@ const CategoryProducts = () => {
       );
       if (data?.success) {
         setAllProducts(data.products);
-        console.log(data);
       }
+      console.log(data);
     } catch (error) {
       console.log("Error fetching products by category:", error);
     }
