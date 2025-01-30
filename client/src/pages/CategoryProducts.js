@@ -16,8 +16,9 @@ const CategoryProducts = () => {
       const { data } = await axios.get(
         `http://localhost:5020/api/product/get-productbycategory/${categoryId}`
       );
-      if (data.success) {
+      if (data?.success) {
         setAllProducts(data.products);
+        console.log(data);
       }
     } catch (error) {
       console.log("Error fetching products by category:", error);
