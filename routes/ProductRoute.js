@@ -15,6 +15,7 @@ import {
   getSingleProductController,
   PerPageController,
   Productcountontroller,
+  relatedProduct,
   searchProductController,
   UpdateProduct,
 } from "../controller/PrdouctController.js";
@@ -50,5 +51,7 @@ router.get("/total", Productcountontroller);
 router.get("/perpageProduct/:page", PerPageController);
 
 router.get("/search/:query", searchProductController);
+
+router.get("/relatedProduct/:pid/:cid", relatedProduct);
 
 export default router;

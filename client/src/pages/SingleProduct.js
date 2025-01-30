@@ -4,23 +4,42 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const SingleProduct = () => {
-  const [allproducts, setAllproducts] = useState(null); // Initialize as null for clarity
+  const [allproducts, setAllproducts] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const params = useParams();
 
+  // Fetch Single Product
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
         `http://localhost:5020/api/product/get-SingleProduct/${params.slug}`
       );
       setAllproducts(data.product);
+      relatedProduct(data?.product?._id, data?.product?.category);
     } catch (error) {
       console.log("Error fetching product:", error);
-      // toast.error("Something went wrong while fetching the product");
+    }
+  };
+
+  const relatedProduct = async (pid, cid) => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5020/api/product/relatedProduct/${pid}/${cid}`
+      );
+      setRelatedProducts(data.products);
+    } catch (error) {
+      console.log("Error fetching product:", error);
     }
   };
 
   useEffect(() => {
     getSingleProduct();
+    // Detect screen resize
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (!allproducts) {
@@ -33,118 +52,166 @@ const SingleProduct = () => {
     );
   }
 
+  // Store image URLs in an array
+  const images = [
+    `http://localhost:5020/api/product/get-ProductPhoto/${allproducts._id}`,
+    `http://localhost:5020/api/product/get-ProductPhotothubnail1/${allproducts._id}`,
+    `http://localhost:5020/api/product/get-ProductPhotothubnail2/${allproducts._id}`,
+    `http://localhost:5020/api/product/get-ProductPhotothubnail3/${allproducts._id}`,
+    `http://localhost:5020/api/product/get-ProductPhotothubnail4/${allproducts._id}`,
+    `http://localhost:5020/api/product/get-ProductPhotothubnail5/${allproducts._id}`,
+  ];
+
+  // Handle navigation
+  const prevSlide = () =>
+    setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
+  const nextSlide = () => setActiveIndex((prev) => (prev + 1) % images.length);
+
   return (
     <Layout>
-      <div className="row mb-3">
-        {/* Image part for product */}
-        <div className="col-md-6">
-          <div
-            id="indicators-carousel"
-            className="relative w-full"
-            data-carousel="static"
-          >
-            <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
-              {/* Item 1 */}
-              <div
-                className="hidden duration-700 ease-in-out"
-                data-carousel-item="active"
-              >
-                <img
-                  src={`http://localhost:5020/api/product/get-ProductPhoto/${allproducts._id}`}
-                  alt={allproducts.name || "Product"}
-                  className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                />
+      <div className="container mx-auto p-4">
+        <div className="grid md:grid-cols-2 gap-6 items-center">
+          {/* Image Carousel */}
+          <div className="relative">
+            {/* Main Image */}
+            <div className="relative h-64 md:h-96 rounded-lg overflow-hidden">
+              <img
+                src={images[activeIndex]}
+                alt={`Slide ${activeIndex + 1}`}
+                className="w-full h-full object-cover transition-opacity duration-700"
+              />
+            </div>
+
+            {/* Previous Button */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-3 rounded-full shadow-md hover:bg-gray-900"
+            >
+              ❮
+            </button>
+
+            {/* Next Button */}
+            <button
+              onClick={nextSlide}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-3 rounded-full shadow-md hover:bg-gray-900"
+            >
+              ❯
+            </button>
+
+            {/* Thumbnails on Desktop, Dots on Mobile */}
+            {isMobile ? (
+              <div className="flex mt-4 justify-center space-x-2">
+                {images.map((_, idx) => (
+                  <div
+                    key={idx}
+                    className={`w-3 h-3 rounded-full cursor-pointer transition ${
+                      idx === activeIndex
+                        ? "bg-red-500 scale-110"
+                        : "bg-gray-400 hover:bg-gray-500"
+                    }`}
+                    onClick={() => setActiveIndex(idx)}
+                  ></div>
+                ))}
               </div>
-              {/* Other Items */}
-              {Array.from({ length: 5 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="hidden duration-700 ease-in-out"
-                  data-carousel-item
-                >
+            ) : (
+              <div className="flex mt-4 justify-center space-x-2">
+                {images.map((src, idx) => (
                   <img
-                    src={`http://localhost:5020/api/product/get-ProductPhotothubnail${
-                      index + 1
-                    }/${allproducts._id}`}
-                    alt={allproducts.name || "Product"}
-                    className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                    key={idx}
+                    src={src}
+                    alt={`Thumbnail ${idx + 1}`}
+                    onClick={() => setActiveIndex(idx)}
+                    className={`w-16 h-16 cursor-pointer rounded-md transition border-2 ${
+                      idx === activeIndex
+                        ? "border-red-500 opacity-100"
+                        : "border-transparent opacity-60 hover:opacity-100"
+                    }`}
                   />
-                </div>
-              ))}
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Product Details */}
+          <div>
+            <h1 className="text-2xl font-bold">{allproducts.name}</h1>
+            <p className="text-gray-600 mt-2">{allproducts.description}</p>
+            <p className="text-lg font-semibold text-red-500 mt-4">
+              Price: ${allproducts.price}
+            </p>
+          </div>
+          {/* related product*/}
+          <div className="flex  flex-wrap justify-center">
+            <h2 className="text-2xl font-bold text-center w-full mt-8">
+              Related Products
+            </h2>
+            <div className="flex flex-row flex-wrap justify-center">
+              {Array.isArray(relatedProducts) &&
+                relatedProducts.map((p) => (
+                  <div
+                    className="col-12  col-md-4 d-flex justify-content-center mb-4"
+                    key={p._id}
+                  >
+                    <div
+                      className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                      style={{ width: "100%" }}
+                    >
+                      <span href="/">
+                        <img
+                          className="p-2 rounded-t-lg"
+                          src={`http://localhost:5020/api/product/get-ProductPhoto/${p._id}`}
+                          alt={p.name || "Product"}
+                          style={{ width: "100%", height: "350px" }}
+                        />
+                      </span>
+                      {/* <span href="/">
+                      <img
+                        className="p-2 rounded-t-lg"
+                        src={`http://localhost:5020/api/product/get-ProductPhotothubnail1/${p._id}`}
+                        alt={p.name || "Product"}
+                        style={{ width: "100%", height: "350px" }}
+                      />
+                    </span> */}
+                      <div className="px-5 pb-5">
+                        <span href="/">
+                          <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            {p.name}
+                          </h5>
+                          <h5 className="text-m  tracking-tight text-gray-900 dark:text-white">
+                            {p.description.substring(0, 50)}...
+                          </h5>
+                        </span>
+
+                        <div className="flex items-center justify-between">
+                          <span className="text-l  text-gray-900 dark:text-white">
+                            {p.price}₹
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 mt-1"
+                          style={{ width: "100%" }}
+                        >
+                          <svg
+                            className="w-3.5 h-3.5 me-2"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 18 21"
+                          >
+                            <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+                          </svg>
+                          Add to cart
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
             </div>
-            {/* Slider indicators */}
-            <div className="absolute z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse bottom-5 left-1/2">
-              {[...Array(5)].map((_, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  className={`w-3 h-3 rounded-full ${
-                    idx === 0 ? "aria-current=true" : "aria-current=false"
-                  }`}
-                  aria-label={`Slide ${idx + 1}`}
-                  data-carousel-slide-to={idx}
-                ></button>
-              ))}
-            </div>
-            {/* Slider controls */}
-            <button
-              type="button"
-              className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-              data-carousel-prev
-            >
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                <svg
-                  className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 6 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 1 1 5l4 4"
-                  />
-                </svg>
-                <span className="sr-only">Previous</span>
-              </span>
-            </button>
-            <button
-              type="button"
-              className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-              data-carousel-next
-            >
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                <svg
-                  className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 6 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 9 4-4-4-4"
-                  />
-                </svg>
-                <span className="sr-only">Next</span>
-              </span>
-            </button>
           </div>
         </div>
-        {/* Product description */}
-        <div className="col-md-6">
-          <h1>{allproducts.name}</h1>
-          <p>{allproducts.description}</p>
-          <p>
-            Price: <strong>${allproducts.price}</strong>
-          </p>
-        </div>
       </div>
-      <div className="row mb-3">{/* Relative product details */}</div>
     </Layout>
   );
 };

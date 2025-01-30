@@ -427,3 +427,31 @@ export const PerPageController = async (req, res) => {
     });
   }
 };
+
+export const relatedProduct = async (req, res) => {
+  try {
+    const { pid, cid } = req.params;
+    console.log("pid:", pid, "cid:", cid);
+    const products = await ProductModel.find({
+      category: cid,
+      _id: { $ne: pid },
+    })
+      .select("-MainImage")
+      .limit(6)
+      .sort({ createdAt: -1 })
+      .populate("category");
+
+    return res.status(200).send({
+      success: true,
+      message: "Related products fetched successfully",
+      products,
+    });
+  } catch (error) {
+    console.log("error::" + error);
+    return res.status(500).send({
+      success: false,
+      message: "Error during fetching related products",
+      error,
+    });
+  }
+};
