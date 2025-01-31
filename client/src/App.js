@@ -35,7 +35,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/singleProduct/:slug" element={<SingleProduct />} />
-        <Route path="/category/:slug" element={<CategoryProducts />} />
+        <Route path="/category/:id" element={<CategoryProducts />} />
 
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />

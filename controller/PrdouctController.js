@@ -458,22 +458,36 @@ export const relatedProduct = async (req, res) => {
 
 export const getProductsByCategoryId = async (req, res) => {
   try {
-    const { categoryId } = req.params;
-    const products = await ProductModel.find({ category: categoryId }).select(
-      "-MainImage"
-    );
-    console.log(products);
-    return res.status(200).send({
+    const { id } = req.params; // Ensure this matches the route param
+
+    if (!id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Category ID is required" });
+    }
+
+    const products = await ProductModel.find({ category: id })
+      .select("-MainImage")
+      .populate("category");
+
+    if (!products.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No products found for this category",
+      });
+    }
+
+    return res.status(200).json({
       success: true,
       message: "Products fetched successfully",
       products,
     });
   } catch (error) {
-    console.log("error::" + error);
-    return res.status(500).send({
+    console.error("Error fetching products by category:", error);
+    return res.status(500).json({
       success: false,
-      message: "Error during fetching products by category",
-      error,
+      message: "Error fetching products by category",
+      error: error.message,
     });
   }
 };
