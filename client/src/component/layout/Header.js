@@ -23,6 +23,7 @@ const Header = () => {
     });
     localStorage.removeItem("auth");
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -37,6 +38,7 @@ const Header = () => {
       console.error("Error:", error);
     }
   };
+
   return (
     <nav
       className="bg-gray-900 text-white sticky top-0"
@@ -162,6 +164,14 @@ const Header = () => {
                 </button>
               </div>
             )}
+
+            {/* Cart Icon with Badge */}
+            <div className="relative">
+              <i className="fa-solid fa-basket-shopping fa-bounce text-white text-xl"></i>
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                3
+              </span>
+            </div>
 
             {/* Sign Up and Login Links */}
             {!auth?.token && (

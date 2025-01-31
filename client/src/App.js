@@ -22,6 +22,7 @@ import UpdateProduct from "./pages/Admin/updateProduct";
 import SearhProduct from "./pages/SearhProduct";
 import SingleProduct from "./pages/SingleProduct";
 import CategoryProducts from "./pages/CategoryProducts";
+import CartPage from "./pages/CartPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/singleProduct/:slug" element={<SingleProduct />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
 
         <Route path="/dashboard" element={<PrivateRoute />}>

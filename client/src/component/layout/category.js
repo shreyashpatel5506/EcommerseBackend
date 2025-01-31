@@ -45,13 +45,12 @@ const Category = () => {
               <div
                 key={cat._id}
                 onClick={() => navigate(`/category/${cat._id}`)}
-                className="group relative flex-shrink-0 cursor-pointer hover:text-white"
+                className="group flex-shrink-0 cursor-pointer"
               >
                 <span className="text-gray-300 group-hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                   {cat.name}
                 </span>
-                {/* Animated bottom border */}
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-200 group-hover:w-full" />
+                <div className="h-0.5 bg-transparent group-hover:bg-blue-500 transition-all duration-200" />
               </div>
             ))}
           </div>
