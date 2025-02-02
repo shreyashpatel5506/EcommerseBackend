@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { useSearch } from "../../Context/search";
 import axios from "axios";
+import { useCart } from "../../Context/Cart";
 
 const Header = () => {
+  const [cart] = useCart();
   const Navigate = useNavigate();
   const [auth, setAuth] = useAuth();
   const location = useLocation();
@@ -167,10 +169,20 @@ const Header = () => {
 
             {/* Cart Icon with Badge */}
             <div className="relative">
-              <i className="fa-solid fa-basket-shopping fa-bounce text-white text-xl"></i>
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                3
-              </span>
+              <button
+                onClick={() => {
+                  Navigate("/cart");
+                }}
+              >
+                <i className="fa-solid fa-basket-shopping fa-bounce text-white text-xl"></i>
+                {cart.length !== 0 ? (
+                  <span className="absolute -top-2 -left-5 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                    {cart.length}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
+              </button>
             </div>
 
             {/* Sign Up and Login Links */}

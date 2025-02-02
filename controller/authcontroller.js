@@ -165,3 +165,55 @@ export const fetchAllUsersController = async (req, res) => {
     res.status(500).json({ success: false, message: "Error fetching users." });
   }
 };
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const { name, email, password, address, role, phone, answer } = req.body;
+    const userId = req.user.id;
+
+    // Validation for missing fields
+    if (!name || !email || !address || !role || !phone || !answer) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+    // Hash password if provided
+    let hashedPassword;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    // Update user
+    const updatedUser = await Usermodels.findByIdAndUpdate(
+      userId,
+      {
+        name,
+        email,
+        phone,
+        address,
+        password: hashedPassword || undefined,
+        role,
+        answer,
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "User profile updated successfully",
+      user: {
+        id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+      },
+    });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};

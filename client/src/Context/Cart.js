@@ -1,8 +1,22 @@
-import { useState, useContext, createContext } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
-const CartProvider = ({ children }) => {
+
+export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Save cart to localStorage on change
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   return (
     <CartContext.Provider value={[cart, setCart]}>
@@ -11,7 +25,6 @@ const CartProvider = ({ children }) => {
   );
 };
 
-// custom hook
-const useCart = () => useContext(CartContext);
-
-export { useCart, CartProvider };
+export const useCart = () => {
+  return useContext(CartContext);
+};

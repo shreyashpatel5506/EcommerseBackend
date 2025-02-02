@@ -3,6 +3,7 @@ import Layout from "../component/layout/Layout";
 import axios from "axios";
 import { Checkbox, Slider } from "antd";
 import { useSearch } from "../Context/search";
+import Category from "../component/layout/category";
 
 const SearhProduct = () => {
   const [categories, setCategories] = useState([]);
@@ -71,6 +72,7 @@ const SearhProduct = () => {
   return (
     <div>
       <Layout>
+        <Category />
         <div className="container-fluid m-3 p-3 mx-0">
           <div className="row">
             <div className="col-md-3">

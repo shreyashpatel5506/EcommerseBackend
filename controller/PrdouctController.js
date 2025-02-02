@@ -1,7 +1,6 @@
 import ProductModel from "../models/ProductModel.js";
 import slugify from "slugify";
 import fs from "fs";
-import Product from "../models/ProductModel.js";
 
 export const addProduct = async (req, res) => {
   try {
@@ -491,3 +490,5 @@ export const getProductsByCategoryId = async (req, res) => {
     });
   }
 };
+
+export const getCartDetail = async();
