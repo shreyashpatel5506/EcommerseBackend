@@ -490,5 +490,3 @@ export const getProductsByCategoryId = async (req, res) => {
     });
   }
 };
-
-export const getCartDetail = async();
