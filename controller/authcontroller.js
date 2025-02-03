@@ -19,6 +19,7 @@ export const registerController = async (req, res) => {
       !phone ||
       !answer
     ) {
+      console.log(name, email, password, address, role, phone, answer);
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -178,6 +179,9 @@ export const updateUserProfile = async (req, res) => {
         message: "All fields are required",
       });
     }
+
+    // Check if email is already registered to another use
+
     // Hash password if provided
     let hashedPassword;
     if (password) {

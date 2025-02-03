@@ -2,17 +2,20 @@ import React, { useEffect } from "react";
 import Layout from "../component/layout/Layout";
 import { useCart } from "../Context/Cart";
 import { Link } from "react-router-dom";
+import { useAuth } from "../Context/auth";
 
 const CartPage = () => {
   const [cart, setCart] = useCart();
+  const [auth] = useAuth();
 
   useEffect(() => {
-    const authToken = localStorage.getItem("authToken");
+    const authToken = auth?.token;
     if (!authToken) {
+      console.log(authToken);
       setCart([]);
       localStorage.removeItem("cart");
     }
-  }, [setCart]);
+  }, [auth, setCart]);
 
   const removeItem = (id) => {
     setCart(cart.filter((item) => item._id !== id));
