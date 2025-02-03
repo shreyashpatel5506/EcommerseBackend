@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../component/layout/Layout";
 import UserMenu from "./UserMenu";
 import { useAuth } from "../../Context/auth";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile = () => {
   const navigate = useNavigate();

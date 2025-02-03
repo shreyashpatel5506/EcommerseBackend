@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
   });
   useEffect(() => {
     const data = localStorage.getItem("auth");
-    if (data) {
+    if (data && data !== "undefined") {
       const parseData = JSON.parse(data);
       // Validate token (this is a placeholder, replace with actual validation logic)
       const isValidToken = parseData.token && parseData.token !== "invalid";
