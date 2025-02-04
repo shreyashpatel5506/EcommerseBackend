@@ -159,11 +159,9 @@ const Homepage = () => {
                         key={p._id}
                       >
                         <button
-                          onDoubleClick={() =>
-                            navigate(`/singleProduct/${p.slug}`)
-                          }
+                          onClick={() => navigate(`/singleProduct/${p.slug}`)}
                           className="text-dark"
-                          style={{ textDecorationLine: "none" }}
+                          style={{ textDecorationLine: "none", width: "100%" }}
                         >
                           <div
                             className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"

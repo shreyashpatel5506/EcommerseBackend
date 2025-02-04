@@ -117,7 +117,7 @@ const Profile = () => {
           <div className="modal show d-block" tabIndex="-1">
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
-                <div className="modal-header">
+                <div className="modal-header flex-row justify-content-between">
                   <h5 className="modal-title">Update Profile</h5>
                   <button
                     type="button"
