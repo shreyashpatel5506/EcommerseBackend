@@ -60,6 +60,8 @@ export const registerController = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        phone: user.phone, // ✅ Add this
+        address: user.address,
       },
       token,
     });
@@ -104,6 +106,8 @@ export const loginController = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        phone: user.phone, // ✅ Add this
+        address: user.address,
       },
     });
   } catch (error) {
@@ -169,11 +173,11 @@ export const fetchAllUsersController = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
   try {
-    const { name, email, password, address, role, phone, answer } = req.body;
-    const userId = req.user.id;
+    const { name, email, address } = req.body;
+    const userId = req.user._id;
 
     // Validation for missing fields
-    if (!name || !email || !address || !role || !phone || !answer) {
+    if (!name || !address) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -182,40 +186,32 @@ export const updateUserProfile = async (req, res) => {
 
     // Check if email is already registered to another use
 
-    // Hash password if provided
-    let hashedPassword;
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10);
-    }
+    // Fetch user
+    const user = await Usermodels.findById(userId);
 
     // Update user
     const updatedUser = await Usermodels.findByIdAndUpdate(
       userId,
       {
-        name,
-        email,
-        phone,
-        address,
-        password: hashedPassword || undefined,
-        role,
-        answer,
+        name: name || user.name,
+        email: email || user.email,
+        address: address || user.address,
       },
       { new: true }
     );
 
-    return res.status(200).json({
+    return res.status(200).send({
       success: true,
       message: "User profile updated successfully",
       user: {
         id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
-        role: updatedUser.role,
       },
     });
   } catch (error) {
     console.error(error.message);
-    return res.status(500).json({
+    return res.status(500).send({
       success: false,
       message: "Internal server error",
     });
