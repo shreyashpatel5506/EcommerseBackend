@@ -102,7 +102,7 @@ const UserMenu = () => {
       {/* Sidebar for Desktop (Always Visible & Centered) */}
       <aside
         ref={sidebarRef}
-        className="fixed left-0 w-64 bg-gray-800 text-white border-r border-gray-700 rounded-lg shadow-lg hidden md:block"
+        className="fixed left-0  bg-gray-800 text-white border-r border-gray-700 rounded-lg shadow-lg hidden md:block"
         style={{
           height: "50vh",
           top: "8vh", // Adjusted top to 8vh for desktop
