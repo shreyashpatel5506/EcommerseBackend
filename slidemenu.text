@@ -20,8 +20,6 @@
             <span className="ml-3">Profile</span>
           </NavLink>
         </li>
-        
-      
     </div>
   </aside>
 </div>

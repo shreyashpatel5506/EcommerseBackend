@@ -14,6 +14,8 @@ import {
   getProductController,
   getProductsByCategoryId,
   getSingleProductController,
+  PaymentgetTokenController,
+  PaymentProcessController,
   PerPageController,
   Productcountontroller,
   relatedProduct,
@@ -56,5 +58,9 @@ router.get("/search/:query", searchProductController);
 router.get("/relatedProduct/:pid/:cid", relatedProduct);
 
 router.get("/get-productbycategory/:id", getProductsByCategoryId);
+
+router.get("/braintree/token", PaymentgetTokenController);
+
+router.post("/braintree/payment", fetchuser, PaymentProcessController);
 
 export default router;

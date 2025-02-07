@@ -1,13 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../component/layout/Layout";
 import { useCart } from "../Context/Cart";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Context/auth";
+import axios from "axios";
+import Dropin from "braintree-web-drop-in-react";
 
 const CartPage = () => {
   const [cart, setCart] = useCart();
   const [auth] = useAuth();
-
+  const [clientToken, setClientToken] = useState("");
+  const [instance, setInstance] = useState(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const authToken = auth?.token;
     if (!authToken) {
@@ -33,6 +37,19 @@ const CartPage = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
+  const gettoken = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:5020/api/braintree/token"
+      );
+      setClientToken(data.token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    gettoken();
+  }, [auth?.token]);
   return (
     <Layout title="Cart - E-commerce">
       <div className="container mt-4">

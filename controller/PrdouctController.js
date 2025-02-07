@@ -1,6 +1,15 @@
 import ProductModel from "../models/ProductModel.js";
 import slugify from "slugify";
 import fs from "fs";
+import braintree from "braintree";
+import Payment from "../models/Payment.js";
+
+var gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "gk3pn8j3pcj789k6",
+  publicKey: "gczz5wyjc3p84v6y",
+  privateKey: "40b0b609daa12175a44fd643eac362ba",
+});
 
 export const addProduct = async (req, res) => {
   try {
@@ -487,6 +496,66 @@ export const getProductsByCategoryId = async (req, res) => {
       success: false,
       message: "Error fetching products by category",
       error: error.message,
+    });
+  }
+};
+
+//payment gateway api router
+export const PaymentgetTokenController = async (req, res) => {
+  try {
+    gateway.clientToken.generate({}, function (err, response) {
+      if (err) {
+        return res.status(500).send(err);
+      } else {
+        return res.status(200).send(response.clientToken);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting products",
+      error,
+    });
+  }
+};
+
+export const PaymentProcessController = async (req, res) => {
+  try {
+    const { cart, paymentMethodNonce } = req.body;
+    let total = 0;
+    cart.map((item) => {
+      total += item.price * item.quantity;
+    });
+    gateway.transaction.sale(
+      {
+        amount: total,
+        paymentMethodNonce: paymentMethodNonce,
+        options: {
+          submitForSettlement: true,
+        },
+      },
+      function (err, result) {
+        if (err) {
+          return res.status(500).send(err);
+        } else {
+          const order = new Payment({
+            user: req.user._id,
+            paymentID: result.transaction.id,
+            paymentStatus: result.transaction.status,
+            items: cart,
+          }).save();
+          res.json({ ok: true });
+          return res.status(200).send(result);
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error during getting products",
+      error,
     });
   }
 };

@@ -7,6 +7,8 @@
     "@vis.gl/react-google-maps": "^1.5.1",
     "antd": "^5.23.1",
     "axios": "^1.7.9",
+    "braintree-web-drop-in": "^1.44.0",
+    "braintree-web-drop-in-react": "^1.2.1",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "cra-template": "1.2.0",
