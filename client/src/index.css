@@ -140,3 +140,41 @@ textarea.form-control:focus {
   outline: none;
   box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.8);
 }
+/* Braintree DropIn Styling */
+.braintree-drop-in {
+  font-family: inherit;
+  margin: 1rem 0;
+}
+
+.braintree-drop-in div {
+  border-radius: 4px !important;
+}
+
+.braintree-form__field-group {
+  border: 1px solid #ced4da !important;
+}
+
+.braintree-heading {
+  color: #212529 !important;
+}
+
+/* General Styling */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../component/layout/Layout";
 import { useCart } from "../Context/Cart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/auth";
 import axios from "axios";
-import Dropin from "braintree-web-drop-in-react";
+import BraintreeDropin from "react-braintree-dropin";
 
 const CartPage = () => {
   const [cart, setCart] = useCart();
@@ -12,19 +12,52 @@ const CartPage = () => {
   const [clientToken, setClientToken] = useState("");
   const [instance, setInstance] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Clear cart if user is not authenticated
   useEffect(() => {
-    const authToken = auth?.token;
-    if (!authToken) {
-      console.log(authToken);
+    if (!auth?.token) {
+      console.log("User not authenticated, clearing cart.");
       setCart([]);
       localStorage.removeItem("cart");
     }
   }, [auth, setCart]);
 
+  // Fetch Braintree client token
+  const getToken = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:5020/api/product/braintree/token",
+        {
+          headers: {
+            Authorization: auth?.token,
+          },
+        }
+      );
+      if (data?.clientToken) {
+        console.log("Client Token:", data.clientToken); // Debugging line
+        setClientToken(data.clientToken);
+      } else {
+        console.error("Client token not received:", data);
+      }
+    } catch (error) {
+      console.error("Error fetching client token:", error);
+    }
+  };
+
+  // Fetch token on component mount or when auth token changes
+  useEffect(() => {
+    if (auth?.token) {
+      getToken();
+    }
+  }, [auth?.token]);
+
+  // Remove item from cart
   const removeItem = (id) => {
     setCart(cart.filter((item) => item._id !== id));
   };
 
+  // Update item quantity in cart
   const updateQuantity = (id, newQuantity) => {
     setCart(
       cart.map((item) =>
@@ -33,27 +66,42 @@ const CartPage = () => {
     );
   };
 
+  // Calculate total price of cart items
   const getTotalPrice = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  const gettoken = async () => {
+  // Handle payment submission
+  const handlePayment = async () => {
+    if (!instance) {
+      console.error("Braintree instance is not available.");
+      alert("Braintree instance is not available.");
+      return;
+    }
+    setLoading(true);
     try {
-      const { data } = await axios.get(
-        "http://localhost:5020/api/braintree/token"
+      const { nonce } = await instance.requestPaymentMethod();
+      const { data } = await axios.post(
+        "http://localhost:5020/api/product/braintree/payment",
+        {
+          nonce,
+          cart,
+        }
       );
-      setClientToken(data.token);
+      setLoading(false);
+      localStorage.removeItem("cart");
+      setCart([]);
+      navigate("/dashboard/user/order");
     } catch (error) {
-      console.log(error);
+      console.error("Payment error:", error);
+      setLoading(false);
     }
   };
-  useEffect(() => {
-    gettoken();
-  }, [auth?.token]);
+
   return (
     <Layout title="Cart - E-commerce">
       <div className="container mt-4">
-        <h2 className="text-center">Shopping Cart</h2>
+        <h2 className="text-center mb-4">Shopping Cart</h2>
 
         {cart.length === 0 ? (
           <div className="text-center">
@@ -64,6 +112,7 @@ const CartPage = () => {
           </div>
         ) : (
           <div className="row">
+            {/* Cart Items */}
             <div className="col-md-8">
               {cart.map((item) => (
                 <div
@@ -82,7 +131,7 @@ const CartPage = () => {
                   />
                   <div className="ms-3">
                     <h5>{item.name}</h5>
-                    <p>{item.price}₹</p>
+                    <p>₹{item.price}</p>
                     <div className="d-flex align-items-center">
                       <button
                         className="btn btn-sm btn-outline-secondary"
@@ -116,12 +165,39 @@ const CartPage = () => {
               ))}
             </div>
 
+            {/* Payment Section */}
             <div className="col-md-4">
+              <div className="card p-3 mb-3">
+                <h4>Order Summary</h4>
+                <p className="fw-bold fs-4">Total: ₹{getTotalPrice()}</p>
+              </div>
+
               <div className="card p-3">
-                <h4>Total: {getTotalPrice()}₹</h4>
-                <button className="btn btn-success w-100">
-                  Proceed to Checkout
-                </button>
+                <h4>Payment Gateway</h4>
+                {clientToken ? (
+                  <div style={{ minHeight: "300px" }}>
+                    <BraintreeDropin
+                      braintree={window.braintree}
+                      authorization={clientToken}
+                      handlePaymentMethod={setInstance}
+                      renderSubmitButton={false}
+                    />
+                    <button
+                      className="btn btn-success w-100 mt-3"
+                      onClick={handlePayment}
+                      disabled={!instance || loading}
+                    >
+                      {loading ? "Processing..." : "Pay Now"}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-2">Initializing payment gateway...</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

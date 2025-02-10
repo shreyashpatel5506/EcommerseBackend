@@ -3,6 +3,8 @@ import Layout from "../component/layout/Layout";
 import { useAuth } from "../Context/auth";
 import axios from "axios";
 import { Checkbox } from "antd";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Slider } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Category from "../component/layout/category";
@@ -158,8 +160,8 @@ const Homepage = () => {
                         className="col-12 col-sm-6 col-md-4 d-flex justify-content-center mb-4"
                         key={p._id}
                       >
-                        <button
-                          onClick={() => navigate(`/singleProduct/${p.slug}`)}
+                        <Link
+                          to={`/singleProduct/${p.slug}`}
                           className="text-dark"
                           style={{ textDecorationLine: "none", width: "100%" }}
                         >
@@ -280,10 +282,19 @@ const Homepage = () => {
                                 style={{ width: "100%" }}
                                 onClick={() => {
                                   if (auth?.token) {
-                                    setCart([
-                                      ...cart,
-                                      { ...p, quantity: productQuantity },
-                                    ]);
+                                    const isProductInCart = cart.some(
+                                      (item) => item._id === p._id
+                                    );
+                                    if (isProductInCart) {
+                                      toast.error(
+                                        "Product is already in the cart"
+                                      );
+                                    } else {
+                                      setCart([
+                                        ...cart,
+                                        { ...p, quantity: productQuantity },
+                                      ]);
+                                    }
                                   } else {
                                     navigate("/login"); // Redirect to login if not authenticated
                                   }
@@ -303,7 +314,7 @@ const Homepage = () => {
                               </button>
                             </div>
                           </div>
-                        </button>
+                        </Link>
                       </div>
                     );
                   })}

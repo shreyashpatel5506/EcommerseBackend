@@ -23,7 +23,7 @@ import SearhProduct from "./pages/SearhProduct";
 import SingleProduct from "./pages/SingleProduct";
 import CategoryProducts from "./pages/CategoryProducts";
 import CartPage from "./pages/CartPage";
-
+import Testcart from "./pages/testcart";
 function App() {
   return (
     <>
@@ -38,6 +38,7 @@ function App() {
         <Route path="/singleProduct/:slug" element={<SingleProduct />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/category/:id" element={<CategoryProducts />} />
+        <Route path="/test12" element={<Testcart />} />
 
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />

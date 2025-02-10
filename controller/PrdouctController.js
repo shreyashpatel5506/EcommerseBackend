@@ -503,19 +503,18 @@ export const getProductsByCategoryId = async (req, res) => {
 //payment gateway api router
 export const PaymentgetTokenController = async (req, res) => {
   try {
-    gateway.clientToken.generate({}, function (err, response) {
+    gateway.clientToken.generate({}, (err, response) => {
       if (err) {
-        return res.status(500).send(err);
-      } else {
-        return res.status(200).send(response.clientToken);
+        return res.status(500).json({ success: false, error: err.message });
       }
+      return res.status(200).json({ clientToken: response.clientToken });
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send({
+    return res.status(500).json({
       success: false,
-      message: "Error during getting products",
-      error,
+      message: "Error getting Braintree client token",
+      error: error.message,
     });
   }
 };
