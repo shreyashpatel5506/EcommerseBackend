@@ -12,6 +12,7 @@ import {
   testcontroller,
   forgotPasswordController,
   updateUserProfile,
+  OrderForAllUser,
 } from "../controller/authcontroller.js"; // Added .js to the path
 
 const router = express.Router();
@@ -38,4 +39,7 @@ router.get("/admin-auth", fetchuser, isAdmin, (req, res) => {
 router.post("/forgot-password", forgotPasswordController);
 
 router.put("/update-profile", fetchuser, updateUserProfile);
+
+router.post("/Orders", OrderForAllUser);
+
 export default router;

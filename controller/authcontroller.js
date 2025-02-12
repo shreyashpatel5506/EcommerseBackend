@@ -1,4 +1,5 @@
 import Usermodels from "../models/Usermodels.js";
+import Payment from "../models/Payment.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -208,6 +209,65 @@ export const updateUserProfile = async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
       },
+    });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).send({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export const OrderForAllUser = async (req, res) => {
+  try {
+    const { status, duration } = req.query;
+
+    let filter = { user: req.user._id };
+
+    if (status) {
+      filter.paymentStatus = status;
+    }
+
+    if (duration) {
+      const now = new Date();
+      let startDate;
+
+      switch (duration) {
+        case "this week":
+          startDate = new Date(now.setDate(now.getDate() - 7));
+          break;
+        case "this month":
+          startDate = new Date(now.setMonth(now.getMonth() - 1));
+          break;
+        case "last 3 months":
+          startDate = new Date(now.setMonth(now.getMonth() - 3));
+          break;
+        case "last 6 months":
+          startDate = new Date(now.setMonth(now.getMonth() - 6));
+          break;
+        case "this year":
+          startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+          break;
+        default:
+          startDate = null;
+      }
+
+      if (startDate) {
+        filter.createdAt = { $gte: startDate };
+      }
+    }
+
+    const orders = await Payment.find(filter)
+      .populate(
+        "items",
+        "MainImage thubnailimage1 thubnailimage2 thubnailimage3 thubnailimage4 thubnailimage5"
+      )
+      .populate("user", "name");
+
+    res.json({
+      success: true,
+      orders,
     });
   } catch (error) {
     console.error(error.message);
