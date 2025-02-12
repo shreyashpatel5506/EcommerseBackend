@@ -4,24 +4,14 @@ import { useCart } from "../Context/Cart";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/auth";
 import axios from "axios";
-import BraintreeDropin from "react-braintree-dropin";
 
 const CartPage = () => {
   const [cart, setCart] = useCart();
   const [auth] = useAuth();
   const [clientToken, setClientToken] = useState("");
-  const [instance, setInstance] = useState(null);
+  // const [instance, setInstance] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  // Clear cart if user is not authenticated
-  useEffect(() => {
-    if (!auth?.token) {
-      console.log("User not authenticated, clearing cart.");
-      setCart([]);
-      localStorage.removeItem("cart");
-    }
-  }, [auth, setCart]);
 
   // Fetch Braintree client token
   const getToken = async () => {
@@ -73,25 +63,25 @@ const CartPage = () => {
 
   // Handle payment submission
   const handlePayment = async () => {
-    if (!instance) {
-      console.error("Braintree instance is not available.");
-      alert("Braintree instance is not available.");
-      return;
-    }
     setLoading(true);
     try {
-      const { nonce } = await instance.requestPaymentMethod();
-      const { data } = await axios.post(
+      await axios.post(
         "http://localhost:5020/api/product/braintree/payment",
         {
-          nonce,
           cart,
+          amount: getTotalPrice(),
+          status: "Pending",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.token}`,
+          },
         }
       );
       setLoading(false);
       localStorage.removeItem("cart");
       setCart([]);
-      navigate("/dashboard/user/order");
+      navigate("/dashboard/user/Orders");
     } catch (error) {
       console.error("Payment error:", error);
       setLoading(false);
@@ -175,17 +165,19 @@ const CartPage = () => {
               <div className="card p-3">
                 <h4>Payment Gateway</h4>
                 {clientToken ? (
-                  <div style={{ minHeight: "300px" }}>
-                    <BraintreeDropin
-                      braintree={window.braintree}
-                      authorization={clientToken}
-                      handlePaymentMethod={setInstance}
-                      renderSubmitButton={false}
-                    />
+                  <div>
+                    {/* <DropIn
+                      options={{
+                        authorization: clientToken,
+                      }}
+                      onInstance={(instance) => {
+                        console.log("Braintree DropIn Instance:", instance);
+                        setInstance(instance);
+                      }}
+                    /> */}
                     <button
                       className="btn btn-success w-100 mt-3"
                       onClick={handlePayment}
-                      disabled={!instance || loading}
                     >
                       {loading ? "Processing..." : "Pay Now"}
                     </button>

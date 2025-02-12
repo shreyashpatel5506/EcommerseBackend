@@ -518,42 +518,31 @@ export const PaymentgetTokenController = async (req, res) => {
     });
   }
 };
-
 export const PaymentProcessController = async (req, res) => {
   try {
-    const { cart, paymentMethodNonce } = req.body;
-    let total = 0;
-    cart.map((item) => {
-      total += item.price * item.quantity;
+    const { cart, status, amount } = req.body;
+    const userId = req.user._id;
+
+    const newPayment = new Payment({
+      paymentID: "DemoIdnowdaysforunuseofrezopay",
+      user: userId,
+      items: cart,
+      status: status,
+      totalAmount: amount,
     });
-    gateway.transaction.sale(
-      {
-        amount: total,
-        paymentMethodNonce: paymentMethodNonce,
-        options: {
-          submitForSettlement: true,
-        },
-      },
-      function (err, result) {
-        if (err) {
-          return res.status(500).send(err);
-        } else {
-          const order = new Payment({
-            user: req.user._id,
-            paymentID: result.transaction.id,
-            paymentStatus: result.transaction.status,
-            items: cart,
-          }).save();
-          res.json({ ok: true });
-          return res.status(200).send(result);
-        }
-      }
-    );
+
+    await newPayment.save();
+
+    res.status(201).send({
+      success: true,
+      message: "Payment information saved successfully",
+      payment: newPayment,
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).send({
+    res.status(500).send({
       success: false,
-      message: "Error during getting products",
+      message: "Error during saving payment information",
       error,
     });
   }

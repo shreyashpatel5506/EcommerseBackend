@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import connectToMongo from "./config/db.js"; // Updated the import statement
@@ -9,6 +10,9 @@ import cors from "cors";
 
 const app = express();
 
+//for extend limit for playLoad
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 // Connect to MongoDB
 connectToMongo();
 
