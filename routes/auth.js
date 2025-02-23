@@ -40,6 +40,6 @@ router.post("/forgot-password", forgotPasswordController);
 
 router.put("/update-profile", fetchuser, updateUserProfile);
 
-router.post("/Orders", OrderForAllUser);
+router.get("/Orders", fetchuser,OrderForAllUser);
 
 export default router;

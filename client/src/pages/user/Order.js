@@ -21,6 +21,7 @@ const Order = () => {
           },
         }
       );
+      console.log(data);
       setOrders(data.orders);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -60,10 +61,12 @@ const Order = () => {
                         onChange={(e) => setStatus(e.target.value)}
                       >
                         <option value="">All orders</option>
-                        <option value="pre-order">Pre-order</option>
-                        <option value="transit">In transit</option>
-                        <option value="confirmed">Confirmed</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Success">Success</option>
+                        <option value="Failed">Failed</option>
+                        <option value="delivered">Delivered</option>
                         <option value="cancelled">Cancelled</option>
+                        <option value="refund">Refund</option>
                       </select>
                     </div>
                     <span className="inline-block text-gray-500 dark:text-gray-400">
@@ -92,42 +95,42 @@ const Order = () => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-6">
+                <div className="container mx-auto p-4">
+                  <h2 className="text-2xl font-semibold mb-4">Orders</h2>
                   {orders.length === 0 ? (
-                    <p>No orders found</p>
+                    <p>No orders found.</p>
                   ) : (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                      {orders.map((order) => (
-                        <div key={order._id} className="card p-4">
-                          <h5 className="text-lg font-semibold">
-                            Order ID: {order._id}
-                          </h5>
-                          <p>Status: {order.paymentStatus}</p>
-                          <p>
-                            Order Date:{" "}
-                            {new Date(order.createdAt).toLocaleDateString()}
-                          </p>
-                          <div>
-                            {order.items.map((item) => (
-                              <div
-                                key={item._id}
-                                className="flex items-center mt-2"
-                              >
-                                <img
-                                  src={`http://localhost:5020/api/product/get-ProductPhoto/${item._id}`}
-                                  alt={item.name}
-                                  className="w-16 h-16 object-cover"
-                                />
-                                <div className="ml-4">
-                                  <p>{item.name}</p>
-                                  <p>Quantity: {item.quantity}</p>
-                                </div>
+                    orders.map((order) => (
+                      <div
+                        key={order._id}
+                        className="border p-4 mb-4 rounded-lg"
+                      >
+                        <p className="font-semibold">Order ID: {order._id}</p>
+                        <p>User: {order.user?.name}</p>
+                        <p>Status: {order.paymentStatus}</p>
+                        <p>
+                          Date: {new Date(order.createdAt).toLocaleDateString()}
+                        </p>
+                        <div className="mt-2">
+                          <h3 className="font-semibold">Items:</h3>
+                          {order.items.map((item, index) => (
+                            <div key={index} className="flex items-center mt-2">
+                              <img
+                                src={`http://localhost:5020/api/product/get-ProductPhoto/${item.product?.id}`}
+                                alt={item.product?.name}
+                                className="w-16 h-16 object-cover"
+                              />
+                              <div className="ml-4">
+                                <p className="font-semibold">
+                                  {item.product?.name}
+                                </p>
+                                <p>Quantity: {item.quantity}</p>
                               </div>
-                            ))}
-                          </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))
                   )}
                 </div>
               </div>

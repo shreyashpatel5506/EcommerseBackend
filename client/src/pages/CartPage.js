@@ -70,7 +70,7 @@ const CartPage = () => {
         {
           cart,
           amount: getTotalPrice(),
-          status: "Pending",
+          paymentStatus: "Pending",
         },
         {
           headers: {

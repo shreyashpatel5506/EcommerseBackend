@@ -218,10 +218,13 @@ export const updateUserProfile = async (req, res) => {
     });
   }
 };
-
 export const OrderForAllUser = async (req, res) => {
   try {
-    const { status, duration } = req.query;
+    const { status = "Pending", duration } = req.query;
+
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
 
     let filter = { user: req.user._id };
 
@@ -260,10 +263,11 @@ export const OrderForAllUser = async (req, res) => {
 
     const orders = await Payment.find(filter)
       .populate(
-        "items",
-        "MainImage thubnailimage1 thubnailimage2 thubnailimage3 thubnailimage4 thubnailimage5"
+        "items.product",
+        "name MainImage thubnailimage1 thubnailimage2 thubnailimage3 thubnailimage4 thubnailimage5"
       )
-      .populate("user", "name");
+      .populate("items.product", "name") // Fetch product name
+      .populate("user", "name"); // Fetch user name
 
     res.json({
       success: true,
