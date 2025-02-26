@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const PaymentSchema = new mongoose.Schema(
   {
     user: {
@@ -24,8 +23,14 @@ const PaymentSchema = new mongoose.Schema(
     },
     items: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
       },
     ],
   },
@@ -33,5 +38,4 @@ const PaymentSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 export default mongoose.model("Payment", PaymentSchema);

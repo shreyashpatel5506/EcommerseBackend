@@ -116,13 +116,13 @@ const Order = () => {
                           {order.items.map((item, index) => (
                             <div key={index} className="flex items-center mt-2">
                               <img
-                                src={`http://localhost:5020/api/product/get-ProductPhoto/${item.product?.id}`}
-                                alt={item.product?.name}
+                                src={`http://localhost:5020/api/product/get-ProductPhoto/${item.product._id}`}
+                                alt={item.product.name}
                                 className="w-16 h-16 object-cover"
                               />
                               <div className="ml-4">
                                 <p className="font-semibold">
-                                  {item.product?.name}
+                                  {item.product.name}
                                 </p>
                                 <p>Quantity: {item.quantity}</p>
                               </div>

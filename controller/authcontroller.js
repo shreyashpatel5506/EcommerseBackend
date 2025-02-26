@@ -222,11 +222,7 @@ export const OrderForAllUser = async (req, res) => {
   try {
     const { status = "Pending", duration } = req.query;
 
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({ success: false, message: "Unauthorized" });
-    }
-
-    let filter = { user: req.user._id };
+    let filter = {};
 
     if (status) {
       filter.paymentStatus = status;
@@ -262,12 +258,12 @@ export const OrderForAllUser = async (req, res) => {
     }
 
     const orders = await Payment.find(filter)
-      .populate(
-        "items.product",
-        "name MainImage thubnailimage1 thubnailimage2 thubnailimage3 thubnailimage4 thubnailimage5"
-      )
-      .populate("items.product", "name") // Fetch product name
-      .populate("user", "name"); // Fetch user name
+      .populate({
+        path: "items.product",
+        select:
+          "name MainImage thubnailimage1 thubnailimage2 thubnailimage3 thubnailimage4 thubnailimage5",
+      })
+      .populate("user", "name");
 
     res.json({
       success: true,
@@ -276,6 +272,48 @@ export const OrderForAllUser = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     return res.status(500).send({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+export const UpdateOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    console.log("Updating order:", orderId, "to status:", status);
+
+    if (!orderId || !status) {
+      return res.status(400).json({
+        success: false,
+        message: "Order ID and status are required",
+      });
+    }
+
+    const updatedOrder = await Payment.findByIdAndUpdate(
+      orderId,
+      { paymentStatus: status },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    console.log("Order updated successfully:", updatedOrder);
+
+    res.json({
+      success: true,
+      message: "Order status updated successfully",
+      order: updatedOrder,
+    });
+  } catch (error) {
+    console.error("Error updating order status:", error.message);
+    res.status(500).json({
       success: false,
       message: "Internal server error",
     });

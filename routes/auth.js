@@ -13,6 +13,7 @@ import {
   forgotPasswordController,
   updateUserProfile,
   OrderForAllUser,
+  UpdateOrderStatus,
 } from "../controller/authcontroller.js"; // Added .js to the path
 
 const router = express.Router();
@@ -40,6 +41,8 @@ router.post("/forgot-password", forgotPasswordController);
 
 router.put("/update-profile", fetchuser, updateUserProfile);
 
-router.get("/Orders", fetchuser,OrderForAllUser);
+router.get("/Orders", fetchuser, OrderForAllUser);
+
+router.put("/Orders/:orderId", fetchuser, isAdmin, UpdateOrderStatus);
 
 export default router;

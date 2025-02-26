@@ -24,6 +24,7 @@ import SingleProduct from "./pages/SingleProduct";
 import CategoryProducts from "./pages/CategoryProducts";
 import CartPage from "./pages/CartPage";
 import Testcart from "./pages/testcart";
+import OrderStatusUpdater from "./pages/Admin/OrderStausUpdater";
 function App() {
   return (
     <>
@@ -51,7 +52,10 @@ function App() {
           <Route path="admin/create-category" element={<CreateCategory />} />
           <Route path="admin/create-product" element={<CreateProduct />} />
           <Route path="admin/Product/:slug" element={<UpdateProduct />} />
-
+          <Route
+            path="admin/OrderStatusUpdater"
+            element={<OrderStatusUpdater />}
+          />
           <Route path="admin/allproducts" element={<AllProducts />} />
           <Route path="admin/users" element={<AllUser />} />
         </Route>

@@ -526,8 +526,11 @@ export const PaymentProcessController = async (req, res) => {
     const newPayment = new Payment({
       paymentID: "DemoIdnowdaysforunuseofrezopay",
       user: userId,
-      items: cart,
-      status: status,
+      items: cart.map((item) => ({
+        product: item._id,
+        quantity: item.quantity,
+      })),
+      paymentStatus: status,
       totalAmount: amount,
     });
 

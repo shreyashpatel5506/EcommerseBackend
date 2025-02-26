@@ -111,6 +111,14 @@ const AdinMenu = () => {
                 <span className="ml-3">All-Users</span>
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/dashboard/admin/OrderStatusUpdater"
+                className="flex items-center p-2 text-base font-normal text-white hover:bg-gray-700 active:bg-gray-800"
+              >
+                <span className="ml-3">OrderStatusUpdater</span>
+              </NavLink>
+            </li>
           </ul>
         </div>
       </aside>
@@ -156,6 +164,14 @@ const AdinMenu = () => {
                 className="flex items-center p-2 text-base font-normal text-white hover:bg-gray-700 active:bg-gray-800"
               >
                 <span className="ml-3">All-Users</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/dashboard/admin/OrderStatusUpdater"
+                className="flex items-center p-2 text-base font-normal text-white hover:bg-gray-700 active:bg-gray-800"
+              >
+                <span className="ml-3">OrderStatusUpdater</span>
               </NavLink>
             </li>
           </ul>
