@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/auth";
+import OtpInput from "react-otp-input";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -16,10 +17,12 @@ const Register = () => {
     address: "",
     name: "",
     termsAccepted: false,
-    answer: "", // Added answer field
+    answer: "",
   });
 
+  const [otp, setOtp] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showOtpInput, setShowOtpInput] = useState(false);
 
   const { email, password, role, phone, address, name, termsAccepted, answer } =
     formData;
@@ -29,10 +32,40 @@ const Register = () => {
     setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
   };
 
+  const handleSendOtp = async () => {
+    if (!email) {
+      toast.error("Email is required!");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:5020/api/auth/register/send-otp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const json = await response.json();
+
+      if (response.ok && json.success) {
+        toast.success("OTP sent successfully");
+        setShowOtpInput(true);
+      } else {
+        toast.error(json.message || "Failed to send OTP. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while sending OTP. Please try again.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!email || !password || !name || !phone || !address || !answer) {
       toast.error("All fields are required!");
       return;
@@ -43,31 +76,36 @@ const Register = () => {
       return;
     }
 
+    if (!otp) {
+      toast.error("OTP is required!");
+      return;
+    }
+
     try {
       setIsSubmitting(true);
-      const response = await fetch("http://localhost:5020/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost:5020/api/auth/register/verify-otp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...formData, otp }),
+        }
+      );
 
       const json = await response.json();
 
-      if (response.ok && json.success !== undefined) {
+      if (response.ok && json.success) {
         toast.success("Account created successfully");
         setAuth({
           ...auth,
           user: json.user,
           token: json.token,
-          // Updated key
         });
 
-        localStorage.setItem("auth", JSON.stringify(response.data));
-        navigate(
-          `/dashboard/${auth?.user?.role === "Admin" ? "admin" : "user"}`
-        );
+        localStorage.setItem("auth", JSON.stringify(json));
+        navigate(`/dashboard/${json.user.role === "Admin" ? "admin" : "user"}`);
       } else {
         toast.error(json.message || "Registration failed. Please try again.");
       }
@@ -122,7 +160,7 @@ const Register = () => {
                   value={phone}
                   onChange={handleChange}
                   required
-                  pattern="^[0-9]{10}$" // Matches a 10-digit phone number
+                  pattern="^[0-9]{10}$"
                 />
               </div>
               <div className="form-group">
@@ -165,19 +203,6 @@ const Register = () => {
                   required
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="answer">Role</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="rolerole"
-                  name="role"
-                  placeholder="Enter your answer"
-                  value={role}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
               <div className="form-check">
                 <input
                   type="checkbox"
@@ -191,13 +216,45 @@ const Register = () => {
                   I accept the terms and conditions
                 </label>
               </div>
-              <button
-                type="submit"
-                className="btn btn-primary btn-block"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Submitting..." : "Submit"}
-              </button>
+
+              {showOtpInput && (
+                <div className="form-group">
+                  <label htmlFor="otp">OTP</label>
+                  <OtpInput
+                    value={otp}
+                    onChange={setOtp}
+                    numInputs={6}
+                    separator={<span>-</span>}
+                    inputStyle={{
+                      width: "3rem",
+                      height: "3rem",
+                      margin: "0 0.5rem",
+                      fontSize: "2rem",
+                      borderRadius: "4px",
+                      border: "1px solid #ccc",
+                    }}
+                    renderInput={(props) => <input {...props} />} // Fixes the error
+                  />
+                </div>
+              )}
+
+              {!showOtpInput ? (
+                <button
+                  type="button"
+                  className="btn btn-primary btn-block"
+                  onClick={handleSendOtp}
+                >
+                  Send OTP
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-block"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Submitting..." : "Submit"}
+                </button>
+              )}
             </form>
           </div>
         </div>
