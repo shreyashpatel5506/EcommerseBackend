@@ -11,7 +11,7 @@ import Category from "../component/layout/category";
 import { useCart } from "../Context/Cart";
 
 const Homepage = () => {
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
   const [categories, setCategories] = useState([]);
   const [allproducts, setAllproducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);

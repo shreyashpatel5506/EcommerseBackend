@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Layout from "../../component/layout/Layout";
 import UserMenu from "./UserMenu";
 import { useAuth } from "../../Context/auth";
@@ -9,7 +8,6 @@ import axios from "axios";
 import "./Profile.css"; // Import custom CSS for additional styling
 
 const Profile = () => {
-  const navigate = useNavigate();
   const [auth, setAuth] = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({

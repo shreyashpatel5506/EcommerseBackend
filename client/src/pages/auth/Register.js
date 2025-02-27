@@ -24,7 +24,7 @@ const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showOtpInput, setShowOtpInput] = useState(false);
 
-  const { email, password, role, phone, address, name, termsAccepted, answer } =
+  const { email, password, phone, address, name, termsAccepted, answer } =
     formData;
 
   const handleChange = (e) => {

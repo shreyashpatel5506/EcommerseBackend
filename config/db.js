@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 async function connectToMongo() {
   try {
     const conn = await mongoose.connect(
-      "mongodb+srv://shreyash:Shreyash%40123@cluster0.xzlmk.mongodb.net/E-commerce", // Updated database name to 'E-commerce'
+      process.env.DB_LINK ||
+        "mongodb+srv://shreyash:Shreyash%40123@cluster0.xzlmk.mongodb.net/E-commerce", // Updated database name to 'E-commerce'
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
