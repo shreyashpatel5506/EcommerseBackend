@@ -7,23 +7,13 @@ import authRoutes from "./routes/auth.js"; // Added .js to the path
 import CreateCtegoryRoute from "./routes/CreateCategoryRoute.js";
 import ProductRoute from "./routes/ProductRoute.js";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(cors({ origin: "http://localhost:3000" }));
 
-app.use(express.static(path.join(__dirname, "./client/build")));
-app.get("*", (_, res) => {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
 //for extend limit for playLoad
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 // Connect to MongoDB
-
 connectToMongo();
 
 // dotenv configuration
@@ -40,9 +30,10 @@ app.use("/api/category", CreateCtegoryRoute);
 app.use("/api/product", ProductRoute);
 
 // endpoint in web rest API
-app.get("/", (_, res) => {
+app.get("/", (req, res) => {
   res.send("Hello World");
 });
+
 // ports initialize
 const port = 5020;
 
