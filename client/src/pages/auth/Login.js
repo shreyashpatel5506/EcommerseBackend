@@ -31,9 +31,10 @@ const Login = () => {
         setAuth({
           ...auth,
           user: res.data.user,
-          token: res.data.token, // Updated key
+          token: res.data.token,
         });
         localStorage.setItem("auth", JSON.stringify(res.data));
+        localStorage.setItem("userRole", res.data.user.role); // Store user role in localStorage
         navigate(
           `/dashboard/${res.data.user.role === "Admin" ? "admin" : "user"}`
         );

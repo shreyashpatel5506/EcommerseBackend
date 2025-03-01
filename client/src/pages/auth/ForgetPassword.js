@@ -7,8 +7,6 @@ import OtpInput from "react-otp-input";
 
 const ForgotPasssword = () => {
   const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [answer, setAnswer] = useState("");
   const [otp, setOtp] = useState("");
   const [showOtpInput, setShowOtpInput] = useState(false);
 
@@ -23,12 +21,10 @@ const ForgotPasssword = () => {
     try {
       const res = await axios.post(
         "http://localhost:5020/api/auth/forgot-password/send-otp",
-        {
-          email,
-        }
+        { email }
       );
 
-      if (res && res.data.success) {
+      if (res.data.success) {
         toast.success(res.data.message);
         setShowOtpInput(true);
       } else {
@@ -45,14 +41,9 @@ const ForgotPasssword = () => {
     try {
       const res = await axios.post(
         "http://localhost:5020/api/auth/forgot-password/verify-otp",
-        {
-          email,
-          newPassword,
-          answer,
-          otp,
-        }
+        { email, otp }
       );
-      if (res && res.data.success) {
+      if (res.data.success) {
         toast.success(res.data.message);
         navigate("/login");
       } else {
@@ -66,9 +57,9 @@ const ForgotPasssword = () => {
 
   return (
     <Layout title={"Forgot Password - Ecommerce APP"}>
-      <div className="form-container ">
+      <div className="form-container">
         <form onSubmit={handleSubmit}>
-          <h4 className="title">RESET PASSWORD</h4>
+          <h4 className="title">VERIFY OTP</h4>
 
           <div className="mb-3">
             <input
@@ -76,30 +67,7 @@ const ForgotPasssword = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="form-control"
-              id="exampleInputEmail1"
-              placeholder="Enter Your Email "
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="text"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              className="form-control"
-              id="exampleInputEmail1"
-              placeholder="Enter Your favorite Sport Name "
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="Enter Your Password"
+              placeholder="Enter Your Email"
               required
             />
           </div>
@@ -134,7 +102,7 @@ const ForgotPasssword = () => {
             </button>
           ) : (
             <button type="submit" className="btn btn-primary">
-              RESET
+              Verify OTP
             </button>
           )}
         </form>

@@ -1,9 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../component/layout/Layout";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Contact = () => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSendMessage = async () => {
+    if (!email || !message) {
+      toast.error("Both fields are required!");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        "http://localhost:5020/api/contact/send-message",
+        {
+          email,
+          message,
+        }
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setEmail("");
+        setMessage("");
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <Layout title={"Contact Us- Ecommerse"} description={"Contact Us"}>
+    <Layout title={"Contact Us - Ecommerce"} description={"Contact Us"}>
       <div className="container my-5">
         <div className="row align-items-center">
           {/* Left Side: Image */}
@@ -15,21 +52,38 @@ const Contact = () => {
             />
           </div>
 
-          {/* Right Side: Contact Form and Social Links */}
+          {/* Right Side: Contact Form */}
           <div className="col-md-6">
             <h2>Contact Us</h2>
             <p>If you have any questions, feel free to reach out to us!</p>
+
+            {/* Email Input */}
+            <input
+              type="email"
+              className="form-control my-2"
+              placeholder="Enter Your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
 
             {/* Message Text Box */}
             <textarea
               className="form-control my-3"
               rows="5"
               placeholder="Type your message here..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
             ></textarea>
 
-            {/* Animated Send Message Button */}
-            <button className="btn btn-primary animated-btn">
-              Send Message
+            {/* Send Message Button */}
+            <button
+              className="btn btn-primary animated-btn"
+              onClick={handleSendMessage}
+              disabled={loading}
+            >
+              {loading ? "Sending..." : "Send Message"}
             </button>
 
             {/* Social Links */}

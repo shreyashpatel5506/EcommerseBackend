@@ -8,8 +8,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon server.js"
-   
+    "server": "nodemon server.js",
+   "both": "concurrently \"npm run start\" \"nodemon ../index.js\""
   },
   "author": "",
   "license": "ISC",

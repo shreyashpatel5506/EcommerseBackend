@@ -97,7 +97,6 @@ export const registerVerifyOTP = async (req, res) => {
     res.status(500).json({ success: false, message: "Error registering user" });
   }
 };
-
 // Forgot Password - Send OTP
 export const forgotPasswordSendOTP = async (req, res) => {
   try {
@@ -116,11 +115,11 @@ export const forgotPasswordSendOTP = async (req, res) => {
   }
 };
 
-// Forgot Password - Verify OTP and Reset Password
+// Forgot Password - Verify OTP
 export const forgotPasswordVerifyOTP = async (req, res) => {
   try {
-    const { email, otp, newPassword } = req.body;
-    if (!email || !otp || !newPassword)
+    const { email, otp } = req.body;
+    if (!email || !otp)
       return res
         .status(400)
         .json({ success: false, message: "All fields are required" });
@@ -131,18 +130,13 @@ export const forgotPasswordVerifyOTP = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Invalid or expired OTP" });
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await Usermodels.findOneAndUpdate({ email }, { password: hashedPassword });
     otpStore.delete(email);
-
     res
       .status(200)
-      .json({ success: true, message: "Password reset successfully" });
+      .json({ success: true, message: "OTP verified successfully" });
   } catch (error) {
     console.error(error.message);
-    res
-      .status(500)
-      .json({ success: false, message: "Error resetting password" });
+    res.status(500).json({ success: false, message: "Error verifying OTP" });
   }
 };
 
@@ -254,8 +248,15 @@ export const updateUserProfile = async (req, res) => {
 export const OrderForAllUser = async (req, res) => {
   try {
     const { status = "Pending", duration } = req.query;
+    const userId = req.user._id; // Authenticated user's ID
+    const isAdmin = req.user.role === "Admin"; // Assuming 'role' is stored in user data
 
     let filter = {};
+
+    // If not admin, only fetch orders for the logged-in user
+    if (!isAdmin) {
+      filter.user = userId;
+    }
 
     if (status) {
       filter.paymentStatus = status;
@@ -296,7 +297,7 @@ export const OrderForAllUser = async (req, res) => {
         select:
           "name MainImage thubnailimage1 thubnailimage2 thubnailimage3 thubnailimage4 thubnailimage5",
       })
-      .populate("user", "name");
+      .populate("user", "name email"); // Show ordered user's name and email
 
     res.json({
       success: true,
@@ -310,6 +311,7 @@ export const OrderForAllUser = async (req, res) => {
     });
   }
 };
+
 export const UpdateOrderStatus = async (req, res) => {
   try {
     const { orderId } = req.params;

@@ -7,7 +7,7 @@ import { useAuth } from "../../Context/auth";
 const Order = () => {
   const [auth] = useAuth();
   const [orders, setOrders] = useState([]);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("Pending");
   const [duration, setDuration] = useState("this week");
 
   const fetchOrders = async () => {
@@ -60,7 +60,6 @@ const Order = () => {
                         value={status}
                         onChange={(e) => setStatus(e.target.value)}
                       >
-                        <option value="">All orders</option>
                         <option value="Pending">Pending</option>
                         <option value="Success">Success</option>
                         <option value="Failed">Failed</option>
