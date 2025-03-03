@@ -160,14 +160,17 @@ const Homepage = () => {
                         className="col-12 col-sm-6 col-md-4 d-flex justify-content-center mb-4"
                         key={p._id}
                       >
-                        <Link
-                          to={`/singleProduct/${p.slug}`}
-                          className="text-dark"
-                          style={{ textDecorationLine: "none", width: "100%" }}
+                        <div
+                          className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                          style={{ width: "100%" }}
                         >
-                          <div
-                            className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                            style={{ width: "100%" }}
+                          <Link
+                            to={`/singleProduct/${p.slug}`}
+                            className="text-dark"
+                            style={{
+                              textDecorationLine: "none",
+                              width: "100%",
+                            }}
                           >
                             <span href="/">
                               <img
@@ -177,144 +180,144 @@ const Homepage = () => {
                                 style={{ width: "100%", height: "350px" }}
                               />
                             </span>
-                            <div className="px-5 pb-5">
-                              <span href="/">
-                                <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                                  {p.name}
-                                </h5>
-                                <h5 className="text-m  tracking-tight text-gray-900 dark:text-white">
-                                  {p.description.substring(0, 50)}...
-                                </h5>
+                          </Link>
+                          <div className="px-5 pb-5">
+                            <span href="/">
+                              <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                {p.name}
+                              </h5>
+                              <h5 className="text-m  tracking-tight text-gray-900 dark:text-white">
+                                {p.description.substring(0, 50)}...
+                              </h5>
+                            </span>
+                            <div className="flex items-center mt-2.5 mb-5">
+                              <div className="flex items-center space-x-1 rtl:space-x-reverse">
+                                {/* Rating SVG Icons */}
+                              </div>
+                              <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
+                                5.0
                               </span>
-                              <div className="flex items-center mt-2.5 mb-5">
-                                <div className="flex items-center space-x-1 rtl:space-x-reverse">
-                                  {/* Rating SVG Icons */}
-                                </div>
-                                <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-                                  5.0
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <span className="text-l  text-gray-900 dark:text-white">
-                                  {p.price}₹
-                                </span>
-                              </div>
-
-                              <form className="max-w-xs mx-auto">
-                                <div className="relative flex items-center max-w-[8rem]">
-                                  <button
-                                    type="button"
-                                    id="decrement-button"
-                                    className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      handleQuantityChange(
-                                        p._id,
-                                        Math.max(1, productQuantity - 1)
-                                      );
-                                    }}
-                                    disabled={productQuantity === 1}
-                                  >
-                                    <svg
-                                      className="w-3 h-3 text-gray-900 dark:text-white"
-                                      aria-hidden="true"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 18 2"
-                                    >
-                                      <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M1 1h16"
-                                      />
-                                    </svg>
-                                  </button>
-                                  <input
-                                    type="text"
-                                    id="quantity-input"
-                                    className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value={productQuantity}
-                                    onChange={(e) => {
-                                      e.preventDefault();
-                                      handleQuantityChange(
-                                        p._id,
-                                        parseInt(e.target.value, 10) || 1
-                                      );
-                                    }}
-                                    required
-                                  />
-                                  <button
-                                    type="button"
-                                    id="increment-button"
-                                    className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      handleQuantityChange(
-                                        p._id,
-                                        productQuantity + 1
-                                      );
-                                    }}
-                                  >
-                                    <svg
-                                      className="w-3 h-3 text-gray-900 dark:text-white"
-                                      aria-hidden="true"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 18 18"
-                                    >
-                                      <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 1v16M1 9h16"
-                                      />
-                                    </svg>
-                                  </button>
-                                </div>
-                              </form>
-
-                              <button
-                                type="button"
-                                className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 mt-1"
-                                style={{ width: "100%" }}
-                                onClick={() => {
-                                  if (auth?.token) {
-                                    const isProductInCart = cart.some(
-                                      (item) => item._id === p._id
-                                    );
-                                    if (isProductInCart) {
-                                      toast.error(
-                                        "Product is already in the cart"
-                                      );
-                                    } else {
-                                      setCart([
-                                        ...cart,
-                                        { ...p, quantity: productQuantity },
-                                      ]);
-                                    }
-                                  } else {
-                                    navigate("/login"); // Redirect to login if not authenticated
-                                  }
-                                }}
-                                disabled={!auth?.token}
-                              >
-                                <svg
-                                  className="w-3.5 h-3.5 me-2"
-                                  aria-hidden="true"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="currentColor"
-                                  viewBox="0 0 18 21"
-                                >
-                                  <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
-                                </svg>
-                                Add to cart
-                              </button>
                             </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-l  text-gray-900 dark:text-white">
+                                {p.price}₹
+                              </span>
+                            </div>
+
+                            <form className="max-w-xs mx-auto">
+                              <div className="relative flex items-center max-w-[8rem]">
+                                <button
+                                  type="button"
+                                  id="decrement-button"
+                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleQuantityChange(
+                                      p._id,
+                                      Math.max(1, productQuantity - 1)
+                                    );
+                                  }}
+                                  disabled={productQuantity === 1}
+                                >
+                                  <svg
+                                    className="w-3 h-3 text-gray-900 dark:text-white"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 18 2"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M1 1h16"
+                                    />
+                                  </svg>
+                                </button>
+                                <input
+                                  type="text"
+                                  id="quantity-input"
+                                  className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  value={productQuantity}
+                                  onChange={(e) => {
+                                    e.preventDefault();
+                                    handleQuantityChange(
+                                      p._id,
+                                      parseInt(e.target.value, 10) || 1
+                                    );
+                                  }}
+                                  required
+                                />
+                                <button
+                                  type="button"
+                                  id="increment-button"
+                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleQuantityChange(
+                                      p._id,
+                                      productQuantity + 1
+                                    );
+                                  }}
+                                >
+                                  <svg
+                                    className="w-3 h-3 text-gray-900 dark:text-white"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 18 18"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M9 1v16M1 9h16"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </form>
+
+                            <button
+                              type="button"
+                              className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 mt-1"
+                              style={{ width: "100%" }}
+                              onClick={() => {
+                                if (auth?.token) {
+                                  const isProductInCart = cart.some(
+                                    (item) => item._id === p._id
+                                  );
+                                  if (isProductInCart) {
+                                    toast.error(
+                                      "Product is already in the cart"
+                                    );
+                                  } else {
+                                    setCart([
+                                      ...cart,
+                                      { ...p, quantity: productQuantity },
+                                    ]);
+                                  }
+                                } else {
+                                  navigate("/login"); // Redirect to login if not authenticated
+                                }
+                              }}
+                              disabled={!auth?.token}
+                            >
+                              <svg
+                                className="w-3.5 h-3.5 me-2"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                viewBox="0 0 18 21"
+                              >
+                                <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+                              </svg>
+                              Add to cart
+                            </button>
                           </div>
-                        </Link>
+                        </div>
                       </div>
                     );
                   })}
