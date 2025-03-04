@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../component/layout/Layout";
+import ProductCard from "./ProductCard";
 import axios from "axios";
+import { useAuth } from "../Context/auth";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useCart } from "../Context/Cart";
 
 const SingleProduct = () => {
   const [allproducts, setAllproducts] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
+  const [auth] = useAuth();
+  const [cart, setCart] = useCart();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const params = useParams();
 
@@ -148,37 +155,20 @@ const SingleProduct = () => {
             Related Products
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="row">
             {Array.isArray(relatedProducts) &&
               relatedProducts.map((p) => (
                 <div
+                  className="col-12 col-md-6 col-lg-6 d-flex justify-content-center mb-4"
                   key={p._id}
-                  className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transition hover:shadow-xl"
                 >
-                  {/* Product Image */}
-                  <div className="w-full h-64 overflow-hidden">
-                    <img
-                      className="w-full h-full object-cover"
-                      src={`http://localhost:5020/api/product/get-ProductPhoto/${p._id}`}
-                      alt={p.name || "Product"}
-                    />
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold">{p.name}</h3>
-                    <p className="text-gray-600 text-sm">
-                      {p.description.substring(0, 50)}...
-                    </p>
-                    <p className="text-lg font-bold text-red-500 mt-2">
-                      ₹{p.price}
-                    </p>
-
-                    {/* Add to Cart Button */}
-                    <button className="w-full mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg transition hover:bg-blue-600">
-                      Add to Cart
-                    </button>
-                  </div>
+                  <ProductCard
+                    product={p}
+                    cart={cart}
+                    setCart={setCart}
+                    auth={auth}
+                    navigate={navigate}
+                  />
                 </div>
               ))}
           </div>
