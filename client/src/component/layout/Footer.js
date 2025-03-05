@@ -13,9 +13,9 @@ const Footer = () => {
         <div className="row">
           {/* About Section */}
           <div className="col-md-4">
-            <h5>About i-NoteBook</h5>
+            <h5>About E-Shoap</h5>
             <p>
-              i-NoteBook is your digital companion for taking notes, organizing
+              E-Shoap is your digital companion for taking notes, organizing
               thoughts, and staying productive. Accessible anytime, anywhere.
             </p>
           </div>
@@ -52,13 +52,13 @@ const Footer = () => {
             <h5>Contact Us</h5>
             <p>
               <i className="fa-solid fa-envelope me-2"></i>{" "}
-              support@inotebook.com
+              support@Eshreyash.com
             </p>
             <p>
               <i className="fa-solid fa-phone me-2"></i> +1 123-456-7890
             </p>
             <p>
-              <i className="fa-solid fa-location-dot me-2"></i> 123 Notebook
+              <i className="fa-solid fa-location-dot me-2"></i> 123 Shreyash
               Lane, Creativity City, 56789
             </p>
           </div>
@@ -66,7 +66,7 @@ const Footer = () => {
         <hr className="my-3" />
         <div className="text-center">
           <p className="mb-0">
-            &copy; {new Date().getFullYear()} i-NoteBook. All Rights Reserved.
+            &copy; {new Date().getFullYear()} E-Shoap. All Rights Reserved.
           </p>
         </div>
       </div>

@@ -9,43 +9,25 @@ const CartPage = () => {
   const [cart, setCart] = useCart();
   const [auth] = useAuth();
   const [clientToken, setClientToken] = useState("");
-  // const [instance, setInstance] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // Fetch Braintree client token
-  const getToken = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:5020/api/product/braintree/token",
-        {
-          headers: {
-            Authorization: auth?.token,
-          },
-        }
-      );
-      if (data?.clientToken) {
-        console.log("Client Token:", data.clientToken); // Debugging line
-        setClientToken(data.clientToken);
-      } else {
-        console.error("Client token not received:", data);
-      }
-    } catch (error) {
-      console.error("Error fetching client token:", error);
-    }
-  };
-
-  // Fetch token on component mount or when auth token changes
   useEffect(() => {
     if (auth?.token) {
-      getToken();
+      axios
+        .get("http://localhost:5020/api/product/braintree/token", {
+          headers: { Authorization: auth?.token },
+        })
+        .then(({ data }) => {
+          if (data?.clientToken) setClientToken(data.clientToken);
+        })
+        .catch((error) => console.error("Error fetching client token:", error));
     }
   }, [auth?.token]);
 
   // Remove item from cart
-  const removeItem = (id) => {
-    setCart(cart.filter((item) => item._id !== id));
-  };
+  const removeItem = (id) => setCart(cart.filter((item) => item._id !== id));
 
   // Update item quantity in cart
   const updateQuantity = (id, newQuantity) => {
@@ -57,9 +39,8 @@ const CartPage = () => {
   };
 
   // Calculate total price of cart items
-  const getTotalPrice = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
+  const getTotalPrice = () =>
+    cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   // Handle payment submission
   const handlePayment = async () => {
@@ -73,17 +54,15 @@ const CartPage = () => {
           paymentStatus: "Pending",
         },
         {
-          headers: {
-            Authorization: `Bearer ${auth?.token}`,
-          },
+          headers: { Authorization: `Bearer ${auth?.token}` },
         }
       );
-      setLoading(false);
       localStorage.removeItem("cart");
       setCart([]);
       navigate("/dashboard/user/Orders");
     } catch (error) {
       console.error("Payment error:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -107,12 +86,13 @@ const CartPage = () => {
               {cart.map((item) => (
                 <div
                   key={item._id}
-                  className="card mb-3 p-3 d-flex flex-row align-items-center"
+                  className="card mb-3 p-3 d-flex flex-row align-items-center shadow-sm"
+                  style={{ borderRadius: "10px" }}
                 >
                   <img
                     src={`http://localhost:5020/api/product/get-ProductPhoto/${item._id}`}
                     alt={item.name}
-                    className="img-fluid"
+                    className="img-fluid rounded"
                     style={{
                       width: "100px",
                       height: "100px",
@@ -121,7 +101,7 @@ const CartPage = () => {
                   />
                   <div className="ms-3">
                     <h5>{item.name}</h5>
-                    <p>₹{item.price}</p>
+                    <p className="text-muted">₹{item.price}</p>
                     <div className="d-flex align-items-center">
                       <button
                         className="btn btn-sm btn-outline-secondary"
@@ -131,6 +111,7 @@ const CartPage = () => {
                             Math.max(1, item.quantity - 1)
                           )
                         }
+                        disabled={item.quantity <= 1}
                       >
                         -
                       </button>
@@ -157,31 +138,21 @@ const CartPage = () => {
 
             {/* Payment Section */}
             <div className="col-md-4">
-              <div className="card p-3 mb-3">
+              <div className="card p-3 mb-3 shadow-sm">
                 <h4>Order Summary</h4>
                 <p className="fw-bold fs-4">Total: ₹{getTotalPrice()}</p>
               </div>
 
-              <div className="card p-3">
+              <div className="card p-3 shadow-sm">
                 <h4>Payment Gateway</h4>
                 {clientToken ? (
-                  <div>
-                    {/* <DropIn
-                      options={{
-                        authorization: clientToken,
-                      }}
-                      onInstance={(instance) => {
-                        console.log("Braintree DropIn Instance:", instance);
-                        setInstance(instance);
-                      }}
-                    /> */}
-                    <button
-                      className="btn btn-success w-100 mt-3"
-                      onClick={handlePayment}
-                    >
-                      {loading ? "Processing..." : "Pay Now"}
-                    </button>
-                  </div>
+                  <button
+                    className="btn btn-success w-100 mt-3"
+                    onClick={handlePayment}
+                    disabled={loading}
+                  >
+                    {loading ? "Processing..." : "Pay Now"}
+                  </button>
                 ) : (
                   <div className="text-center">
                     <div className="spinner-border text-primary" role="status">
