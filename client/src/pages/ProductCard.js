@@ -18,6 +18,7 @@ const ProductCard = ({ product, auth, cart, setCart }) => {
             className="rounded-l-lg object-cover h-350 w-full"
             src={`http://localhost:5020/api/product/get-ProductPhoto/${product._id}`}
             alt={product.name || "Product"}
+            style={{ width: "100%", height: "300px" }}
           />
         </Link>
         <div className="p-4 flex flex-col justify-between w-1/2">
