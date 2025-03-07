@@ -27,7 +27,7 @@ const ProductCard = ({ product, auth, cart, setCart }) => {
               {product.name}
             </h5>
             <p className="text-sm text-gray-700 dark:text-gray-300">
-              {product.description.substring(0, 80)}...
+              {product.description.substring(0, 90)}...
             </p>
             <div className="flex items-center mt-2.5 mb-2">
               <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
