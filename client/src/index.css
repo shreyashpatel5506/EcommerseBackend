@@ -173,7 +173,9 @@ textarea.form-control:focus {
 .btn {
   transition: all 0.3s ease;
 }
-
+.btn1 {
+  transition: all 0.3s ease;
+}
 .btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
