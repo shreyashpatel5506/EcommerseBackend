@@ -26,7 +26,7 @@ const CreateCategory = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5020/api/category/create-category",
+        "https://ecommersebackend-pwe8.onrender.com/api/category/create-category",
         {
           name,
         },
@@ -50,7 +50,7 @@ const CreateCategory = () => {
   const getAllcategories = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5020/api/category/get-category"
+        "https://ecommersebackend-pwe8.onrender.com/api/category/get-category"
       );
       if (data.success) {
         setCategories(data.category);
@@ -64,7 +64,7 @@ const CreateCategory = () => {
     try {
       // const data
       const { data } = await axios.put(
-        `http://localhost:5020/api/category/update-category/${selected._id}`,
+        `https://ecommersebackend-pwe8.onrender.com/api/category/update-category/${selected._id}`,
         { name: updatedName },
         {
           headers: {
@@ -87,7 +87,7 @@ const CreateCategory = () => {
   const handdleDelete = async (pid) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5020/api/category/delete-category/${pid}`,
+        `https://ecommersebackend-pwe8.onrender.com/api/category/delete-category/${pid}`,
         {
           headers: {
             Authorization: `Bearer ${auth.token}`,

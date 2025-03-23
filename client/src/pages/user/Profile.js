@@ -43,7 +43,7 @@ const Profile = () => {
     }
     try {
       const { data } = await axios.put(
-        "http://localhost:5020/api/auth/update-profile",
+        "https://ecommersebackend-pwe8.onrender.com/api/auth/update-profile",
         JSON.stringify({
           name: formData.name,
           address: formData.address,

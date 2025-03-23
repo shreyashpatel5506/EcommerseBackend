@@ -20,10 +20,13 @@ const Login = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5020/api/auth/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://ecommersebackend-pwe8.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
       if (res && res.data.success) {
         toast.success("Login successful");

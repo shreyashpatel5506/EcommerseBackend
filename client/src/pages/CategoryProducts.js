@@ -17,7 +17,7 @@ const CategoryProducts = () => {
     if (!id) return;
     try {
       const { data } = await axios.get(
-        `http://localhost:5020/api/product/get-productbycategory/${id}`
+        `https://ecommersebackend-pwe8.onrender.com/api/product/get-productbycategory/${id}`
       );
       if (data?.success) {
         setAllProducts(data.products);
@@ -47,7 +47,7 @@ const CategoryProducts = () => {
               >
                 <img
                   className="w-full h-48 object-cover"
-                  src={`http://localhost:5020/api/product/get-ProductPhoto/${product._id}`}
+                  src={`https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhoto/${product._id}`}
                   alt={product.name}
                 />
                 <div className="p-4">

@@ -10,7 +10,7 @@ const AllProducts = () => {
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5020/api/product/get-Products"
+        "https://ecommersebackend-pwe8.onrender.com/api/product/get-Products"
       );
       console.log("Fetched products:", data);
       if (data.success) {
@@ -56,7 +56,7 @@ const AllProducts = () => {
                           <a href="/">
                             <img
                               className="p-2 rounded-t-lg"
-                              src={`http://localhost:5020/api/product/get-ProductPhoto/${p._id}`}
+                              src={`https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhoto/${p._id}`}
                               alt={p.name || "Product"}
                               style={{ width: "100%", height: "350px" }}
                             />

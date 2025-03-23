@@ -40,7 +40,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5020/api/auth/register/send-otp",
+        "https://ecommersebackend-pwe8.onrender.com/api/auth/register/send-otp",
         {
           method: "POST",
           headers: {
@@ -84,7 +84,7 @@ const Register = () => {
     try {
       setIsSubmitting(true);
       const response = await fetch(
-        "http://localhost:5020/api/auth/register/verify-otp",
+        "https://ecommersebackend-pwe8.onrender.com/api/auth/register/verify-otp",
         {
           method: "POST",
           headers: {

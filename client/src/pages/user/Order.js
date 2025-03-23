@@ -13,7 +13,7 @@ const Order = () => {
   const fetchOrders = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5020/api/auth/Orders",
+        "https://ecommersebackend-pwe8.onrender.com/api/auth/Orders",
         {
           params: { status, duration },
           headers: {
@@ -115,7 +115,7 @@ const Order = () => {
                           {order.items.map((item, index) => (
                             <div key={index} className="flex items-center mt-2">
                               <img
-                                src={`http://localhost:5020/api/product/get-ProductPhoto/${item.product._id}`}
+                                src={`https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhoto/${item.product._id}`}
                                 alt={item.product.name}
                                 className="w-16 h-16 object-cover"
                               />

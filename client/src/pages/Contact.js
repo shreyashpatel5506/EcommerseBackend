@@ -17,7 +17,7 @@ const Contact = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:5020/api/contact/send-message",
+        "https://ecommersebackend-pwe8.onrender.com/api/contact/send-message",
         {
           email,
           message,

@@ -24,7 +24,7 @@ const Homepage = () => {
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5020/api/product/perpageProduct/${page}`
+        `https://ecommersebackend-pwe8.onrender.com/api/product/perpageProduct/${page}`
       );
       if (data.success) {
         setAllproducts((prevProducts) =>
@@ -44,7 +44,7 @@ const Homepage = () => {
   const getTotals = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5020/api/product/total`
+        `https://ecommersebackend-pwe8.onrender.com/api/product/total`
       );
       if (data.success) {
         setTotal(data.count);
@@ -57,7 +57,7 @@ const Homepage = () => {
   const getAllcategories = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5020/api/category/get-category"
+        "https://ecommersebackend-pwe8.onrender.com/api/category/get-category"
       );
       if (data.success) {
         setCategories(data.category);
@@ -84,7 +84,7 @@ const Homepage = () => {
   const filterProducts = async (selectedCategories, price) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:5020/api/product/filter-Product",
+        "https://ecommersebackend-pwe8.onrender.com/api/product/filter-Product",
         { selectedCategories, price }
       );
       if (data.success) {

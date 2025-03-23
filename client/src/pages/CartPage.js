@@ -16,9 +16,12 @@ const CartPage = () => {
   useEffect(() => {
     if (auth?.token) {
       axios
-        .get("http://localhost:5020/api/product/braintree/token", {
-          headers: { Authorization: auth?.token },
-        })
+        .get(
+          "https://ecommersebackend-pwe8.onrender.com/api/product/braintree/token",
+          {
+            headers: { Authorization: auth?.token },
+          }
+        )
         .then(({ data }) => {
           if (data?.clientToken) setClientToken(data.clientToken);
         })
@@ -47,7 +50,7 @@ const CartPage = () => {
     setLoading(true);
     try {
       await axios.post(
-        "http://localhost:5020/api/product/braintree/payment",
+        "https://ecommersebackend-pwe8.onrender.com/api/product/braintree/payment",
         {
           cart,
           amount: getTotalPrice(),
@@ -90,7 +93,7 @@ const CartPage = () => {
                   style={{ borderRadius: "10px" }}
                 >
                   <img
-                    src={`http://localhost:5020/api/product/get-ProductPhoto/${item._id}`}
+                    src={`https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhoto/${item._id}`}
                     alt={item.name}
                     className="img-fluid rounded"
                     style={{

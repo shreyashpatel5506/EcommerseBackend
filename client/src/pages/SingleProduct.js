@@ -21,7 +21,7 @@ const SingleProduct = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5020/api/product/get-SingleProduct/${params.slug}`
+        `https://ecommersebackend-pwe8.onrender.com/api/product/get-SingleProduct/${params.slug}`
       );
       setAllproducts(data.product);
       relatedProduct(data?.product?._id, data?.product?.category);
@@ -33,7 +33,7 @@ const SingleProduct = () => {
   const relatedProduct = async (pid, cid) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5020/api/product/relatedProduct/${pid}/${cid}`
+        `https://ecommersebackend-pwe8.onrender.com/api/product/relatedProduct/${pid}/${cid}`
       );
       setRelatedProducts(data.products);
     } catch (error) {
@@ -61,12 +61,12 @@ const SingleProduct = () => {
 
   // Store image URLs in an array
   const images = [
-    `http://localhost:5020/api/product/get-ProductPhoto/${allproducts._id}`,
-    `http://localhost:5020/api/product/get-ProductPhotothubnail1/${allproducts._id}`,
-    `http://localhost:5020/api/product/get-ProductPhotothubnail2/${allproducts._id}`,
-    `http://localhost:5020/api/product/get-ProductPhotothubnail3/${allproducts._id}`,
-    `http://localhost:5020/api/product/get-ProductPhotothubnail4/${allproducts._id}`,
-    `http://localhost:5020/api/product/get-ProductPhotothubnail5/${allproducts._id}`,
+    `https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhoto/${allproducts._id}`,
+    `https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhotothubnail1/${allproducts._id}`,
+    `https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhotothubnail2/${allproducts._id}`,
+    `https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhotothubnail3/${allproducts._id}`,
+    `https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhotothubnail4/${allproducts._id}`,
+    `https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhotothubnail5/${allproducts._id}`,
   ];
 
   // Handle navigation
