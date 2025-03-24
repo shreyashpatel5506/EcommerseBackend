@@ -12,7 +12,7 @@ export default function PrivateRoute() {
     const authCheck = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5020/api/auth/user-auth",
+          "https://ecommersebackend-pwe8.onrender.com/api/auth/user-auth",
           {
             headers: {
               Authorization: `Bearer ${auth?.token}`, // Pass the token in the Authorization header
