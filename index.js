@@ -23,7 +23,7 @@ dotenv.config();
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "https://ecommersebackend-1.onrender.com" }));
 
 // routes
 app.use("/api/auth", authRoutes);
