@@ -1,7 +1,7 @@
 Live Demo:
 https://ecommersebackend-1.onrender.com/
-
-Please note that the current version does not include a proper frontend, as this setup is primarily for backend testing purposes. The frontend will be updated shortly.
+ 
+Please note that the current version does not include a proper frontend, as this setup is primarily for backend testing purposes. The frontend will be updated shortly and i accept pull request.
 
 I developed a robust e-commerce backend application using the MERN stack (MongoDB, Express.js, React, and Node.js). 
 This project focuses primarily on building and testing the backend functionalities essential for any e-commerce platform.
