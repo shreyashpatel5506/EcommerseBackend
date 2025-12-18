@@ -25,7 +25,7 @@
     "gitignore": "^0.7.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.12.0",
-    "mongoose": "^8.9.2",
+    "mongoose": "^8.9.5",
     "morgan": "^1.10.0",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
