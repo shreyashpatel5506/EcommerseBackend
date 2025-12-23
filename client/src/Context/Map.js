@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const Map = () => {
+const Maps = () => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const [map, setMap] = useState(null);
@@ -66,4 +66,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default Maps;
