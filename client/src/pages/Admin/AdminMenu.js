@@ -54,11 +54,14 @@ const AdinMenu = () => {
 
       {/* Modal Overlay (For Mobile & Tablet) */}
       {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-          onClick={closeSidebar}
-        />
-      )}
+  <button
+    type="button"
+    aria-label="Close sidebar"
+    onClick={closeSidebar}
+    className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden cursor-default"
+  />
+)}
+
 
       {/* Sidebar (Mobile & Tablet - Slide In/Out) */}
       <aside
