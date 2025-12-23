@@ -42,16 +42,17 @@ const Category = () => {
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto scrollbar-hide items-center space-x-6 py-3">
             {categories.map((cat) => (
-              <div
-                key={cat._id}
-                onClick={() => navigate(`/category/${cat._id}`)}
-                className="group flex-shrink-0 cursor-pointer"
-              >
-                <span className="text-gray-300 group-hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                  {cat.name}
-                </span>
-                <div className="h-0.5 bg-transparent group-hover:bg-blue-500 transition-all duration-200" />
-              </div>
+             <button
+  key={cat._id}
+  onClick={() => navigate(`/category/${cat._id}`)}
+  className="group flex-shrink-0 cursor-pointer bg-transparent border-none p-0"
+>
+  <span className="text-gray-300 group-hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+    {cat.name}
+  </span>
+  <div className="h-0.5 bg-transparent group-hover:bg-blue-500 transition-all duration-200" />
+</button>
+
             ))}
           </div>
         </div>
