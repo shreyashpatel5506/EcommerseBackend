@@ -103,13 +103,14 @@ const Homepage = () => {
           <div className="col-md-3">
             <div className="d-flex flex-row justify-content-between">
               <h5>Filter</h5>
-              <span
-                className="btn-danger"
-                onClick={() => window.location.reload()}
-                style={{ cursor: "pointer" }}
-              >
-                Reset Filter
-              </span>
+            <button
+  type="button"
+  className="btn-danger"
+  onClick={() => window.location.reload()}
+>
+  Reset Filter
+</button>
+
             </div>
             <Checkbox.Group
               options={categories.map((c) => ({ label: c.name, value: c._id }))}
