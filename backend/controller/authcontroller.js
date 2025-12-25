@@ -3,31 +3,57 @@ import Payment from "../models/Payment.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import axios from "axios";
+
 
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret_key";
 const OTP_EXPIRATION = 5 * 60 * 1000; // 5 minutes
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "shreyashpatel5506@gmail.com",
-    pass: "esas djpv lbrd zvxt",
-  },
-});
-
-// Store OTPs temporarily (Use Redis or DB for production)
 const otpStore = new Map();
 
-// Generate and send OTP
-const sendOTP = async (email) => {
+export const sendOTP = async (email) => {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  otpStore.set(email, { otp, expiresAt: Date.now() + OTP_EXPIRATION });
-  await transporter.sendMail({
-    from: "shreyashpatel5506@gmail.com",
-    to: email,
-    subject: "Your OTP Code",
-    text: `Your OTP is ${otp}. It is valid for 5 minutes.`,
+
+  otpStore.set(email, {
+    otp,
+    expiresAt: Date.now() + OTP_EXPIRATION,
   });
+
+  try {
+    await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "Virtual Assistant",
+          email: process.env.BREVO_SENDER, // verified sender
+        },
+        to: [
+          {
+            email,
+          },
+        ],
+        subject: "🔐 Your OTP Code",
+        htmlContent: `
+          <h2>Your OTP is ${otp}</h2>
+          <p>This OTP is valid for 5 minutes.</p>
+        `,
+      },
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "Content-Type": "application/json",
+        },
+        timeout: 10000,
+      }
+    );
+
+    return true;
+  } catch (error) {
+    console.error(
+      "Brevo API OTP error:",
+      error.response?.data || error.message
+    );
+    throw new Error("OTP send failed");
+  }
 };
 
 // Register - Send OTP

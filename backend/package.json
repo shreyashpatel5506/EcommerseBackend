@@ -3,18 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "node index.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "server": "nodemon server.js",
-   "both": "concurrently \"npm run start\" \"nodemon ../index.js\""
-  },
+ "scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+},
+
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.13.2",
     "bcrypt": "^5.1.1",
     "braintree": "^3.28.0",
     "concurrently": "^9.1.2",
