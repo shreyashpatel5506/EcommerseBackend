@@ -2,7 +2,6 @@ import Usermodels from "../models/Usermodels.js";
 import Payment from "../models/Payment.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
 import axios from "axios";
 
 
