@@ -1,5 +1,5 @@
 import express from "express";
-import { fetchuser, isAdmin } from "../midleware/fetchuser.js";
+import { fetchuser, isAdmin } from "../middleware/fetchuser.js";
 import foridable from "express-formidable";
 import {
   addProduct,
