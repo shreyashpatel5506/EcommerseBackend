@@ -20,7 +20,7 @@ const ForgotPasssword = () => {
 
     try {
       const res = await axios.post(
-        "https://ecommersebackend-pwe8.onrender.com/api/auth/forgot-password/send-otp",
+        "https://ecommersebackendshreyash.onrender.com/api/auth/forgot-password/send-otp",
         { email }
       );
 
@@ -40,7 +40,7 @@ const ForgotPasssword = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://ecommersebackend-pwe8.onrender.com/api/auth/forgot-password/verify-otp",
+        "https://ecommersebackendshreyash.onrender.com/api/auth/forgot-password/verify-otp",
         { email, otp }
       );
       if (res.data.success) {

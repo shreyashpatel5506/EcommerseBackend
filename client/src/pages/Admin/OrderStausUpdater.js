@@ -13,7 +13,7 @@ const OrderStatusUpdater = () => {
   const fetchOrders = async () => {
     try {
       const { data } = await axios.get(
-        "https://ecommersebackend-pwe8.onrender.com/api/auth/Orders",
+        "https://ecommersebackendshreyash.onrender.com/api/auth/Orders",
         {
           params: { duration, status: statusFilter }, // Include status in API request
           headers: {
@@ -32,7 +32,7 @@ const OrderStatusUpdater = () => {
     try {
       console.log("Updating order:", orderId, "to status:", newStatus);
       const response = await axios.put(
-        `https://ecommersebackend-pwe8.onrender.com/api/auth/Orders/${orderId}`,
+        `https://ecommersebackendshreyash.onrender.com/api/auth/Orders/${orderId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${auth?.token}` } }
       );
@@ -153,7 +153,7 @@ const OrderStatusUpdater = () => {
                           {order.items.map((item, index) => (
                             <div key={index} className="flex items-center mt-2">
                               <img
-                                src={`https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhoto/${item.product._id}`}
+                                src={`https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhoto/${item.product._id}`}
                                 alt={item.product.name}
                                 className="w-16 h-16 object-cover"
                               />

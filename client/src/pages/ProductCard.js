@@ -16,7 +16,7 @@ const ProductCard = ({ product, auth, cart, setCart }) => {
         <Link to={`/singleProduct/${product.slug}`} className="text-dark w-1/2">
           <img
             className="rounded-l-lg object-cover h-350 w-full"
-            src={`https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhoto/${product._id}`}
+            src={`https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhoto/${product._id}`}
             alt={product.name || "Product"}
             style={{ width: "100%", height: "100%" }}
           />

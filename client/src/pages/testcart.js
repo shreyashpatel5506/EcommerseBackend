@@ -18,7 +18,7 @@ export default function Testcart({ show = false, onPaymentCompleted }) {
         setErrorMessage(null); // Clear previous errors
         console.log("Fetching client token...");
         const { data } = await axios.get(
-          "http://localhost:5020/api/product/braintree/token"
+          "https://ecommersebackendshreyash.onrender.com/api/product/braintree/token"
         );
 
         if (data?.clientToken) {

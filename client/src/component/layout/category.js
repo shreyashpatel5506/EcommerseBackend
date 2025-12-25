@@ -9,7 +9,7 @@ const Category = () => {
   const getAllCategories = async () => {
     try {
       const { data } = await axios.get(
-        "https://ecommersebackend-pwe8.onrender.com/api/category/get-category"
+        "https://ecommersebackendshreyash.onrender.com/api/category/get-category"
       );
       if (data.success) {
         setCategories(data.category);

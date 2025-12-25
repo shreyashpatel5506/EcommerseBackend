@@ -25,7 +25,7 @@ const SearhProduct = () => {
   const getTotals = async () => {
     try {
       const { data } = await axios.get(
-        `https://ecommersebackend-pwe8.onrender.com/api/product/total`
+        `https://ecommersebackendshreyash.onrender.com/api/product/total`
       );
       if (data.success) {
         setTotal(data.count);
@@ -38,7 +38,7 @@ const SearhProduct = () => {
   const getAllcategories = async () => {
     try {
       const { data } = await axios.get(
-        "https://ecommersebackend-pwe8.onrender.com/api/category/get-category"
+        "https://ecommersebackendshreyash.onrender.com/api/category/get-category"
       );
       if (data.success) {
         setCategories(data.category);
@@ -66,7 +66,7 @@ const SearhProduct = () => {
   const filterProducts = async (selectedCategories, price) => {
     try {
       const { data } = await axios.post(
-        "https://ecommersebackend-pwe8.onrender.com/api/product/filter-Product",
+        "https://ecommersebackendshreyash.onrender.com/api/product/filter-Product",
         { selectedCategories, price }
       );
       if (data.success) {

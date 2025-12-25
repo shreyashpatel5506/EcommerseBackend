@@ -17,7 +17,7 @@ const CartPage = () => {
     if (auth?.token) {
       axios
         .get(
-          "https://ecommersebackend-pwe8.onrender.com/api/product/braintree/token",
+          "https://ecommersebackendshreyash.onrender.com/api/product/braintree/token",
           {
             headers: { Authorization: auth?.token },
           }
@@ -50,7 +50,7 @@ const CartPage = () => {
     setLoading(true);
     try {
       await axios.post(
-        "https://ecommersebackend-pwe8.onrender.com/api/product/braintree/payment",
+        "https://ecommersebackendshreyash.onrender.com/api/product/braintree/payment",
         {
           cart,
           amount: getTotalPrice(),
@@ -93,7 +93,7 @@ const CartPage = () => {
                   style={{ borderRadius: "10px" }}
                 >
                   <img
-                    src={`https://ecommersebackend-pwe8.onrender.com/api/product/get-ProductPhoto/${item._id}`}
+                    src={`https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhoto/${item._id}`}
                     alt={item.name}
                     className="img-fluid rounded"
                     style={{

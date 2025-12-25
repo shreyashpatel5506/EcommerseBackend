@@ -30,7 +30,7 @@ const Header = () => {
     e.preventDefault();
     try {
       const { data } = await axios.get(
-        `http://localhost:5020/api/product/search/${values.query}`
+        `https://ecommersebackendshreyash.onrender.com/api/product/search/${values.query}`
       );
       if (data.success) {
         setValues({ ...values, products: data.products });

@@ -32,7 +32,7 @@ const UpdateProduct = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5020/api/product/get-SingleProduct/${params.slug}`
+        `https://ecommersebackendshreyash.onrender.com/api/product/get-SingleProduct/${params.slug}`
       );
       setName(data.product.name);
       setId(data.product._id);
@@ -55,7 +55,7 @@ const UpdateProduct = () => {
   const getAllcategories = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5020/api/category/get-category"
+        "https://ecommersebackendshreyash.onrender.com/api/category/get-category"
       );
       if (data.success) {
         setCategories(data.category);
@@ -87,7 +87,7 @@ const UpdateProduct = () => {
       productData.append("thubnailimage1", thubnailimage1);
       productData.append("category", category);
       const { data } = await axios.put(
-        `http://localhost:5020/api/product/Update-Product/${id}`,
+        `https://ecommersebackendshreyash.onrender.com/api/product/Update-Product/${id}`,
         productData,
         {
           headers: {
@@ -115,7 +115,7 @@ const UpdateProduct = () => {
       );
       if (!answer) return;
       const { data } = await axios.delete(
-        `http://localhost:5020/api/product/delete-Product/${id}`,
+        `https://ecommersebackendshreyash.onrender.com/api/product/delete-Product/${id}`,
         {
           headers: {
             Authorization: `Bearer ${auth.token}`,
@@ -182,7 +182,7 @@ const UpdateProduct = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`http://localhost:5020/api/product/get-ProductPhoto/${id}`}
+                      src={`https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhoto/${id}`}
                       alt="product_image"
                       height={"200px"}
                       className="img img-responsive"

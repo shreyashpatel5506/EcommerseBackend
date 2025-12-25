@@ -30,7 +30,7 @@ const CreateProduct = () => {
   const getAllcategories = async () => {
     try {
       const { data } = await axios.get(
-        "https://ecommersebackend-pwe8.onrender.com/api/category/get-category"
+        "https://ecommersebackendshreyash.onrender.com/api/category/get-category"
       );
       if (data.success) {
         setCategories(data.category);
@@ -60,7 +60,7 @@ const CreateProduct = () => {
       productData.append("thubnailimage1", thubnailimage1);
       productData.append("category", category);
       const { data } = await axios.post(
-        "https://ecommersebackend-pwe8.onrender.com/api/product/Create-Product",
+        "https://ecommersebackendshreyash.onrender.com/api/product/Create-Product",
         productData,
         {
           headers: {

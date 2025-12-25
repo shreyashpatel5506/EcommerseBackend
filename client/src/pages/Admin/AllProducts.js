@@ -10,7 +10,7 @@ const AllProducts = () => {
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        "https://ecommersebackend-pwe8.onrender.com/api/product/get-Products"
+        "https://ecommersebackendshreyash.onrender.com/api/product/get-Products"
       );
       console.log("Fetched products:", data);
       if (data.success) {

@@ -21,7 +21,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "https://ecommersebackend-pwe8.onrender.com/api/auth/login",
+        "https://ecommersebackendshreyash.onrender.com/api/auth/login",
         {
           email,
           password,
