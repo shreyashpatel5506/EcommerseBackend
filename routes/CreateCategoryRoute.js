@@ -6,7 +6,7 @@ import {
   DeleteCategory,
   SingleCategoryGets,
 } from "../controller/CreateCategoryController.js";
-import { fetchuser, isAdmin } from "../midleware/fetchuser.js";
+import { fetchuser, isAdmin } from "../middleware/fetchuser.js";
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { isAdmin, fetchuser } from "../midleware/fetchuser.js";
+import { isAdmin, fetchuser } from "../middleware/fetchuser.js";
 import {
   registerSendOTP,
   registerVerifyOTP,
