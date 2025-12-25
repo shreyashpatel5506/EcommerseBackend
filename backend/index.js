@@ -3,19 +3,24 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
-
-dotenv.config(); // ✅ ALWAYS ON TOP
+import path from "path";
+import { fileURLToPath } from "url";
 
 import connectToMongo from "./config/db.js";
 import authRoutes from "./routes/auth.js";
 import CreateCategoryRoute from "./routes/CreateCategoryRoute.js";
 import ProductRoute from "./routes/ProductRoute.js";
 import contactRoutes from "./routes/ContactRoute.js";
-import path from "path";
-import { fileURLToPath } from "url";
 
+/* ===================== ENV ===================== */
+dotenv.config();
 
+/* ===================== APP ===================== */
 const app = express();
+
+/* ===================== PATH SETUP ===================== */
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /* ===================== MIDDLEWARE ===================== */
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -24,20 +29,9 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 /* ===================== CORS ===================== */
-const allowedOrigins = [
-  "https://ecommersebackend-1.onrender.com",
-  "http://localhost:3000",
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (!allowedOrigins.includes(origin)) {
-        return callback(new Error("Not allowed by CORS"));
-      }
-      callback(null, true);
-    },
+    origin: true, // allow same-domain frontend
     credentials: true,
   })
 );
@@ -45,31 +39,26 @@ app.use(
 /* ===================== DATABASE ===================== */
 connectToMongo();
 
-/* ===================== ROUTES ===================== */
+/* ===================== API ROUTES ===================== */
 app.use("/api/auth", authRoutes);
 app.use("/api/category", CreateCategoryRoute);
 app.use("/api/product", ProductRoute);
 app.use("/api/contact", contactRoutes);
 
-/* ===================== TEST ROUTE ===================== */
-app.get("/", (req, res) => {
-  res.send("Ecommerce Backend Running 🚀");
+/* ===================== FRONTEND (REACT BUILD) ===================== */
+// ⚠️ React folder name = client
+const clientBuildPath = path.join(__dirname, "../client/build");
+
+app.use(express.static(clientBuildPath));
+
+// React routing support
+app.get("*", (req, res) => {
+  res.sendFile(path.join(clientBuildPath, "index.html"));
 });
 
 /* ===================== SERVER ===================== */
 const PORT = process.env.PORT || 5020;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Serve React frontend
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-// React routing fallback
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+  console.log(`🚀 Server running on port ${PORT}`);
 });
