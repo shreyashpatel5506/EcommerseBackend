@@ -11,6 +11,9 @@ import authRoutes from "./routes/auth.js";
 import CreateCategoryRoute from "./routes/CreateCategoryRoute.js";
 import ProductRoute from "./routes/ProductRoute.js";
 import contactRoutes from "./routes/ContactRoute.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
 
 const app = express();
 
@@ -58,4 +61,15 @@ const PORT = process.env.PORT || 5020;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve React frontend
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+// React routing fallback
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });
