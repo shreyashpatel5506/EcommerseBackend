@@ -62,11 +62,11 @@ const SingleProduct = () => {
   // Store image URLs in an array
   const images = [
     `https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhoto/${allproducts._id}`,
-    `hhttps://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail1/${allproducts._id}`,
-    `hhttps://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail2/${allproducts._id}`,
-    `hhttps://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail3/${allproducts._id}`,
-    `hhttps://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail4/${allproducts._id}`,
-    `hhttps://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail5/${allproducts._id}`,
+    `https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail1/${allproducts._id}`,
+    `https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail2/${allproducts._id}`,
+    `https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail3/${allproducts._id}`,
+    `https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail4/${allproducts._id}`,
+    `https://ecommersebackendshreyash.onrender.com/api/product/get-ProductPhotothubnail5/${allproducts._id}`,
   ];
 
   // Handle navigation
@@ -111,11 +111,10 @@ const SingleProduct = () => {
                 {images.map((_, idx) => (
                   <div
                     key={idx}
-                    className={`w-3 h-3 rounded-full cursor-pointer transition ${
-                      idx === activeIndex
+                    className={`w-3 h-3 rounded-full cursor-pointer transition ${idx === activeIndex
                         ? "bg-red-500 scale-110"
                         : "bg-gray-400 hover:bg-gray-500"
-                    }`}
+                      }`}
                     onClick={() => setActiveIndex(idx)}
                   ></div>
                 ))}
@@ -128,11 +127,10 @@ const SingleProduct = () => {
                     src={src}
                     alt={`Thumbnail ${idx + 1}`}
                     onClick={() => setActiveIndex(idx)}
-                    className={`w-16 h-16 cursor-pointer rounded-md transition border-2 ${
-                      idx === activeIndex
+                    className={`w-16 h-16 cursor-pointer rounded-md transition border-2 ${idx === activeIndex
                         ? "border-red-500 opacity-100"
                         : "border-transparent opacity-60 hover:opacity-100"
-                    }`}
+                      }`}
                   />
                 ))}
               </div>
