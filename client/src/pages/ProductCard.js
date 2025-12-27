@@ -20,12 +20,13 @@ const ProductCard = ({ product, auth, cart, setCart }) => {
       return;
     }
 
-    const isProductInCart = cart.some((item) => item._id === product._id);
+    const safeCart = cart || [];
+    const isProductInCart = safeCart.some((item) => item._id === product._id);
 
     if (isProductInCart) {
       toast.error("Product is already in the cart");
     } else {
-      setCart([...cart, { ...product, quantity: productQuantity }]);
+      setCart([...safeCart, { ...product, quantity: productQuantity }]);
       toast.success("Product added to cart");
     }
   };
