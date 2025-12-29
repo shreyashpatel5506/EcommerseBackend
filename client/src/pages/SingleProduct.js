@@ -6,6 +6,7 @@ import { useAuth } from "../Context/auth";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useCart } from "../Context/Cart";
+import { useLoading } from "../Context/Loading";
 
 const SingleProduct = () => {
   const [allproducts, setAllproducts] = useState(null);
@@ -16,17 +17,21 @@ const SingleProduct = () => {
   const [cart, setCart] = useCart();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const params = useParams();
+  const { showLoading, hideLoading } = useLoading();
 
   // Fetch Single Product
   const getSingleProduct = async () => {
     try {
+      showLoading("Loading Product Details...");
       const { data } = await axios.get(
         `https://ecommersebackendshreyash.onrender.com/api/product/get-SingleProduct/${params.slug}`
       );
       setAllproducts(data.product);
-      relatedProduct(data?.product?._id, data?.product?.category);
+      await relatedProduct(data?.product?._id, data?.product?.category);
     } catch (error) {
       console.log("Error fetching product:", error);
+    } finally {
+      hideLoading();
     }
   };
 
@@ -47,14 +52,13 @@ const SingleProduct = () => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.slug]);
 
   if (!allproducts) {
     return (
       <Layout>
-        <div className="text-center mt-5">
-          <h2>Loading Product Details...</h2>
-        </div>
+        <div style={{ minHeight: "60vh" }} />
       </Layout>
     );
   }
